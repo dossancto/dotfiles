@@ -30,19 +30,28 @@ return {
           "StatusLine",
           "StatusLineNC",
           "EndOfBuffer",
-        },
-        -- table: additional groups that should be cleared
-        extra_groups = {
+
+          "NormalNC",
+
+          "StatusLine", -- Add this
+          "StatusLineNC", -- And this
+
           "NormalFloat", -- plugins which have float panel such as Lazy, Mason, LspInfo
           "NvimTreeNormal", -- NvimTree
         },
-        -- table: groups you don't want to clear
-        exclude_groups = {},
-        -- function: code to be executed after highlight groups are cleared
-        -- Also the user event "TransparentClear" will be triggered
-        on_clear = function() end,
+        -- table: additional groups that should be cleared
+        extra_groups = {
+          "VertSplit", -- This is the group for split borders
+          "NormalFloat", -- plugins which have float panel such as Lazy, Mason, LspInfo
+          "NvimTreeNormal", -- NvimTree
+
+          "StatusLine", -- Add this
+          "StatusLineNC", -- And this
+        },
       })
       require("transparent").clear_prefix("NeoTree")
+      require("transparent").clear_prefix("BufferLine")
+      require('transparent').clear_prefix('lualine')
     end,
   },
   {

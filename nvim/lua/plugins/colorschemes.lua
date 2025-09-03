@@ -2,6 +2,12 @@ return {
   {
     "rebelot/kanagawa.nvim",
   },
+  {
+    "ab-dx/ares.nvim",
+  },
+  {
+    "nyoom-engineering/oxocarbon.nvim",
+  },
   { "datsfilipe/min-theme.nvim" },
   {
     "sainnhe/gruvbox-material",
@@ -19,12 +25,12 @@ return {
   {
     "navarasu/onedark.nvim",
     -- priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      require("onedark").setup({
-        style = "warmer",
-      })
-      -- Enable theme
-      require("onedark").load()
-    end,
+    -- config = function()
+    --   require("onedark").setup({
+    --     style = "warmer",
+    --   })
+    --   -- Enable theme
+    --   require("onedark").load()
+    -- end,
   },
 }
