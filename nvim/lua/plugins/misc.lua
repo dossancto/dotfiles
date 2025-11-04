@@ -9,7 +9,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.diff",
+    "nvim-mini/mini.diff",
     lazy = false,
     config = function()
       local diff = require("mini.diff")

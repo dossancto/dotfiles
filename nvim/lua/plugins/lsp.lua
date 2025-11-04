@@ -42,10 +42,6 @@ return {
     end,
   },
   {
-    "Hoffs/omnisharp-extended-lsp.nvim",
-    lazy = false,
-  },
-  {
     "mfussenegger/nvim-dap",
     lazy = false,
   },

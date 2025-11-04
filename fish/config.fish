@@ -32,3 +32,6 @@ set -x WINEPREFIX "/mnt/nvme0n1p5/projects/wineprefix"
 set -gx EDITOR nvim
 set -gx POSTING_PAGER fx
 set -gx PATH /home/dossancto/.dotnet/tools $PATH
+
+# Generated for envman. Do not edit.
+test -s ~/.config/envman/load.fish; and source ~/.config/envman/load.fish

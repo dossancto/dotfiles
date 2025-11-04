@@ -52,8 +52,8 @@ return {
       }
 
       vim.lsp.config("roslyn", {
-        -- cmd = cmd,
-        -- handlers = require("rzls.roslyn_handlers"),
+        cmd = cmd,
+        handlers = require("rzls.roslyn_handlers"),
         settings = {
           ["csharp|inlay_hints"] = {
             csharp_enable_inlay_hints_for_implicit_object_creation = true,
