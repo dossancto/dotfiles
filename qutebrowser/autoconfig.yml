@@ -12,7 +12,10 @@ settings:
     global: darkorange
   colors.webpage.darkmode.enabled:
     global: true
+  content.javascript.can_open_tabs_automatically:
+    global: true
   content.javascript.clipboard:
+    global: access-paste
     https://cmp.saghen.dev: access-paste
     https://gemini.google.com: access-paste
     https://github.com: access-paste
@@ -35,6 +38,8 @@ settings:
     - normal {line}G{column0}l
   fonts.default_size:
     global: 9pt
+  statusbar.show:
+    global: always
   tabs.position:
     global: top
   tabs.show:
