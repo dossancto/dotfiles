@@ -52,8 +52,8 @@ return {
       }
 
       vim.lsp.config("roslyn", {
-        cmd = cmd,
-        handlers = require("rzls.roslyn_handlers"),
+        -- cmd = cmd,
+        -- handlers = require("rzls.roslyn_handlers"),
         settings = {
           ["csharp|inlay_hints"] = {
             csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -81,12 +81,12 @@ return {
     end,
     init = function()
       -- We add the Razor file types before the plugin loads.
-      vim.filetype.add({
-        extension = {
-          razor = "razor",
-          cshtml = "razor",
-        },
-      })
+      -- vim.filetype.add({
+      --   extension = {
+      --     razor = "razor",
+      --     cshtml = "razor",
+      --   },
+      -- })
     end,
   },
   {
