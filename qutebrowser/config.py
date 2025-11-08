@@ -117,3 +117,4 @@ config.bind('<Alt-c>','set-cmd-text -s :spawn --userscript container-open')
 config.bind('<Alt-f>','hint links userscript container-open')
 config.bind('<Alt-f>','hint links userscript container-open')
 
+config.source('gruvbox.py')
