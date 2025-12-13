@@ -1,5 +1,26 @@
 return {
   {
+    "razak17/tailwind-fold.nvim",
+    opts = {},
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    ft = { "html", "svelte", "astro", "vue", "typescriptreact", "php", "blade", "razor", "blazor" },
+  },
+  {
+    "benomahony/uv.nvim",
+    -- Automatically load the plugin when a Python file is opened
+    ft = { "python" },
+    -- Optional: Highly recommended for a better command-line UI
+    dependencies = {
+      "folke/snacks.nvim", -- or "nvim-telescope/telescope.nvim"
+    },
+    opts = {
+      -- Automatically activate virtual environments when found
+      auto_activate_venv = true,
+      -- Enable UI picker integration (requires snacks.nvim or telescope.nvim)
+      picker_integration = true,
+    },
+  },
+  {
     "mrcjkb/rustaceanvim",
     version = "^6",
     lazy = false,
@@ -14,10 +35,13 @@ return {
   },
   {
     "seblyng/roslyn.nvim",
-
-    lazy = false,
-
+    ---@module 'roslyn.config'
+    ---@type RoslynNvimConfig
     ft = { "cs", "razor" },
+    opts = {
+      -- your configuration comes here; leave empty for default settings
+    },
+
     dependencies = {
       {
         -- By loading as a dependencies, we ensure that we are available to set
@@ -27,18 +51,10 @@ return {
       },
     },
 
-    ---@module 'roslyn.config'
-    ---@type RoslynNvimConfig
-    opts = {
-      filewatching = "roslyn",
-      -- your configuration comes here; leave empty for default settings
-    },
-
-    -- "mise",
-    -- "exec",
-    -- "dotnet@8",
-    -- "--",
     config = function()
+      -- Use one of the methods in the Integration section to compose the command.
+      local mason_registry = require("mason-registry")
+
       local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
       local cmd = {
         "roslyn",
@@ -52,8 +68,8 @@ return {
       }
 
       vim.lsp.config("roslyn", {
-        -- cmd = cmd,
-        -- handlers = require("rzls.roslyn_handlers"),
+        cmd = cmd,
+        handlers = require("rzls.roslyn_handlers").handlers or require("rzls.roslyn_handlers"),
         settings = {
           ["csharp|inlay_hints"] = {
             csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -76,17 +92,17 @@ return {
           },
         },
       })
-      require("roslyn").setup()
+
       vim.lsp.enable("roslyn")
     end,
     init = function()
       -- We add the Razor file types before the plugin loads.
-      -- vim.filetype.add({
-      --   extension = {
-      --     razor = "razor",
-      --     cshtml = "razor",
-      --   },
-      -- })
+      vim.filetype.add({
+        extension = {
+          razor = "razor",
+          cshtml = "razor",
+        },
+      })
     end,
   },
   {

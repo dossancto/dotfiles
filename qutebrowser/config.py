@@ -1,6 +1,6 @@
 # pylint: disable=C0111
-# c = c  # noqa: F821 pylint: disable=E0602,C0103
-# config = config  # noqa: F821 pylint: disable=E0602,C0103
+c = c  # noqa: F821 pylint: disable=E0602,C0103
+config = config  # noqa: F821 pylint: disable=E0602,C0103
 # pylint settings included to disable linting errors
 
 # c.url.start_pages = ""
@@ -12,8 +12,11 @@ c.tabs.title.format = "{audio}{index}: {host}"
 c.url.searchengines = {
 # note - if you use duckduckgo, you can make use of its built in bangs, of which there are many! https://duckduckgo.com/bangs
         'DEFAULT': 'https://google.com/search?q={}',
+        '!cmd': 'https://command-not-found.com/{}',
         '!d': 'https://duckduckgo.com/?q={}',
+        '!r':       'https://www.reddit.com/search?q={}',
         '!g': 'https://google.com/search?q={}',
+        '!down': 'https://downdetector.com.br/search/?q={}',
         '!aw': 'https://wiki.archlinux.org/?search={}',
         '!aur': 'https://archlinux.org/packages/?sort=&q={}&maintainer=&flagged=',
         '!flat': 'https://flathub.org/apps/search?q={}',
@@ -33,6 +36,9 @@ config.bind('=', 'cmd-set-text -s :open')
 config.bind('cs', 'cmd-set-text -s :config-source')
 config.bind('tH', 'config-cycle tabs.show multiple never')
 config.bind('sH', 'config-cycle statusbar.show always never')
+config.bind('cn', 'config-cycle colors.webpage.darkmode.enabled')
+config.bind('cm', ':clear-messages')
+
 config.bind('T', 'hint links tab')
 config.bind('pP', 'open -- {primary}')
 config.bind('pp', 'open -- {clipboard}')

@@ -4,7 +4,7 @@ return {
     opts = {},
     dependencies = {
       "nvim-lua/plenary.nvim",
-      -- "github/copilot.vim",
+      "github/copilot.vim",
       "nvim-treesitter/nvim-treesitter",
     },
   },

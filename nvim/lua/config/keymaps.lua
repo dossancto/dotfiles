@@ -17,7 +17,7 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 -- Navigation
 
 unmap("n", "F")
-map("n", "F", "<cmd>Spectre<cr>", { desc = "Open Spectre" })
+map("n", "F", "<cmd> lua require('spectre').toggle() <cr>", { desc = "Open Spectre" })
 map("n", "<leader>F", "<cmd>Spectre<cr>", { desc = "Open Spectre" })
 
 -- IA
