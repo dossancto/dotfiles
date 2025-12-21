@@ -1,42 +1,10 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+vim.g.mapleader = " "
 
--- require("lspconfig").dartls.setup({
---             cmd = { "dart", "language-server", "--protocol=lsp" },
---             filetypes = { "dart" },
---             init_options = {
---                 closingLabels = true,
---                 flutterOutline = true,
---                 onlyAnalyzeProjectsWithOpenFiles = true,
---                 outline = true,
---                 suggestFromUnimportedLibraries = true,
---             },
---             -- root_dir = root_pattern("pubspec.yaml"),
---             settings = {
---                 dart = {
---                     completeFunctionCalls = true,
---                     showTodos = true,
---                 },
---             },
---             on_attach = function(client, bufnr)
---             end,
---         })
+-- basic setup
+require('init.options').load_options()
+require('init.keymaps').load_keymaps()
 
+-- load lazy and the plugins
+require('init.lazy_pre').check_load_lazy()
 
--- local mason_lspconfig = require("mason-lspconfig")
---
--- mason_lspconfig.setup({
---   handlers = {
---     rust_analzer = function() end,
---   },
--- })
-
--- local cmd = {
---   "mise",
---   "exec",
---   "dotnet@9",
--- }
---
--- vim.lsp.config("rust-analyzer", {
---   cmd = cmd,
--- })
+vim.cmd("colorscheme ayu-dark")

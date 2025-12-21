@@ -2,15 +2,34 @@ import { createBinding, For, This } from "ags"
 import app from "ags/gtk4/app"
 import style from "./style.scss"
 import Bar from "./widget/Bar"
+import GLib from "gi://GLib"
+import Gtk from "gi://Gtk?version=4.0"
+import Applauncher from "./widget/AppLauncher"
+
+let applauncher: Gtk.Window
 
 app.start({
   css: style,
-  // It's usually best to go with the default Adwaita theme
-  // and built off of it, instead of allowing the system theme
-  // to potentially mess something up when it is changed.
-  // Note: `* { all:unset }` in css is not recommended.
   gtkTheme: "Adwaita",
+
+  requestHandler(request, res) {
+    const [, argv] = GLib.shell_parse_argv(request)
+    if (!argv) return res("argv parse error")
+
+    switch (argv[0]) {
+      case "toggle":
+        applauncher.visible = !applauncher.visible
+        return res("ok")
+      default:
+        return res("unknown command")
+    }
+  },
+
   main() {
+    applauncher = Applauncher() as Gtk.Window
+    app.add_window(applauncher)
+    applauncher.present()
+
     const monitors = createBinding(app, "monitors")
 
     return (
