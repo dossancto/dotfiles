@@ -1,7 +1,26 @@
 local keymap = require('init.keymaps')
 
 return {
+	{
+		"DestopLine/boilersharp.nvim",
+		config = function()
+		  require("boilersharp").setup()
+		end,
+		opts = {
+		  -- Your options go here
+		},
+    },
 	-- completion
+	{
+	  "OXY2DEV/markview.nvim",
+	  lazy = false,
+	  opts = {
+		preview = {
+		  filetypes = { "markdown", "codecompanion" },
+		  ignore_buftypes = {},
+		},
+	  },
+	},
 	{
 		'saghen/blink.cmp',
 		event = 'InsertEnter',
@@ -91,6 +110,7 @@ return {
 	{
 		'lewis6991/gitsigns.nvim',
 		cmd = { 'Gitsigns' },
+		lazy = false,
 		opts = {},
 	},
 

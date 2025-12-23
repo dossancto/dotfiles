@@ -9,6 +9,9 @@ local opt = vim.opt
 opt.smoothscroll = false
 opt.cursorline = false
 
+opt.ignorecase = true
+opt.smartcase = true
+
 opt.clipboard = 'unnamedplus'
 
 opt.spelllang = { 'pt_br', 'en' }
@@ -87,7 +90,6 @@ M.plugins = {
 
 	lsp_servers = {
 		'clangd',
-		'roslyn',
 		-- 'zls',
 		'gopls',
 		-- 'pylyzer',

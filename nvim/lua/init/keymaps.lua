@@ -11,6 +11,11 @@ local diagnostic_goto = function(next, severity)
   end
 end
 
+-- IA section
+map({"n", "v"}, "<leader>aa", "<cmd>CodeCompanion<cr>", { desc = "Open Companion" })
+map({"n", "v"}, "<leader>at", "<cmd>CodeCompanionChat toggle<cr>", { desc = "Open Companion" })
+map("n", "<leader>ac", "<cmd>CodeCompanionActions<cr>", { desc = "Open Companion Help" })
+
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
 map({'n', 'i', 'v'}, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
@@ -20,14 +25,18 @@ map('n', '<C-j>', '<C-w>j', { desc = 'Move to lower window' })
 map('n', '<C-k>', '<C-w>k', { desc = 'Move to upper window' })
 map('n', '<C-l>', '<C-w>l', { desc = 'Move to right window' })
 
+-- Resize with arrows
+map('n', '<C-Up>', ':resize +2<CR>', { silent = true })
+map('n', '<C-Down>', ':resize -2<CR>', { silent = true })
+map('n', '<C-Left>', ':vertical resize -2<CR>', { silent = true })
+map('n', '<C-Right>', ':vertical resize +2<CR>', { silent = true })
+
 -- Git
 map("n", "<Leader>gk", "<cmd>Gitsigns prev_hunk<cr>")
 map("n", "<Leader>gj", "<cmd>Gitsigns next_hunk<cr>")
-map("n", "<Leader>go", "<cmd>Telescope git_status<cr>")
 map("n", "<Leader>gm", "<cmd>DiffviewOpen<cr>")
-map("n", "<Leader>gt", "<cmd>Telescope git_stash<CR>", { desc = "telescope git stash" })
 map("n", "<Leader>gC", "<cmd>DiffviewClose<cr>")
--- map("n", "<Leader>gh", "<cmd>DiffviewFileHistory %<cr>")
+map("n", "<Leader>gh", "<cmd>DiffviewFileHistory %<cr>")
 map("n", "<Leader>ge", "<cmd>DiffviewToggleFiles<cr>")
 map("n", "<Leader>gn", "<cmd>GitBlameCopyCommitURL<cr>")
 map("n", "<Leader>gr", "<cmd>Gitsigns reset_hunk<cr>")
@@ -43,6 +52,10 @@ map("n", "<leader>lk", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Actions" })
 map("n", "F", "<cmd> lua require('spectre').toggle() <cr>", { desc = "Open Spectre" })
 map("n", "<leader>F", "<cmd>Spectre<cr>", { desc = "Open Spectre" })
+
+map('n', '<Leader>fm', function()
+    vim.lsp.buf.format { async = true }
+end, { desc = 'Format current buffer with LSP' })
 
 -- keymaps generic
 
