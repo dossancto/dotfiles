@@ -8,3 +8,7 @@ require('init.keymaps').load_keymaps()
 require('init.lazy_pre').check_load_lazy()
 
 vim.cmd("colorscheme ayu-dark")
+
+require('init.lsp')
+
+
