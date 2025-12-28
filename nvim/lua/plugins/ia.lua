@@ -1,10 +1,10 @@
 return {
-	 {
-		"olimorris/codecompanion.nvim",
+	{
+		'olimorris/codecompanion.nvim',
 		opts = {},
 		dependencies = {
-		  "nvim-lua/plenary.nvim",
-		  "github/copilot.vim",
+			'nvim-lua/plenary.nvim',
+			'github/copilot.vim',
 		},
-	  },
+	},
 }

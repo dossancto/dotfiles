@@ -2,24 +2,36 @@ local keymap = require('init.keymaps')
 
 return {
 	{
-		"DestopLine/boilersharp.nvim",
+		'HakonHarnes/img-clip.nvim',
+		opts = {
+			filetypes = {
+				codecompanion = {
+					prompt_for_file_name = false,
+					template = '[Image]($FILE_PATH)',
+					use_absolute_path = true,
+				},
+			},
+		},
+	},
+	{
+		'DestopLine/boilersharp.nvim',
 		config = function()
-		  require("boilersharp").setup()
+			require('boilersharp').setup()
 		end,
 		opts = {
-		  -- Your options go here
+			-- Your options go here
 		},
-    },
+	},
 	-- completion
 	{
-	  "OXY2DEV/markview.nvim",
-	  lazy = false,
-	  opts = {
-		preview = {
-		  filetypes = { "markdown", "codecompanion" },
-		  ignore_buftypes = {},
+		'OXY2DEV/markview.nvim',
+		lazy = false,
+		opts = {
+			preview = {
+				filetypes = { 'markdown', 'codecompanion' },
+				ignore_buftypes = {},
+			},
 		},
-	  },
 	},
 	{
 		'saghen/blink.cmp',
