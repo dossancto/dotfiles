@@ -124,11 +124,93 @@ return {
 			'theHamsta/nvim-dap-virtual-text',
 		},
 	},
+	{
+		'igorlfs/nvim-dap-view',
+		---@module 'dap-view'
+		---@type dapview.Config
+		opts = {},
+	},
 
 	-- dap virtual text support
 	{
 		'theHamsta/nvim-dap-virtual-text',
 		lazy = true,
 		opts = {},
+	},
+	{
+		'nicholasmata/nvim-dap-cs',
+		lazy = false,
+		config = function()
+			local dap = require('dap')
+			-- local dotnet = require("easy-dotnet")
+			-- local dapui = require("dapui")
+			dap.set_log_level('TRACE')
+			local debug_dll = nil
+
+			-- local function ensure_dll()
+			--   if debug_dll ~= nil then
+			--     return debug_dll
+			--   end
+			--   local dll = dotnet.get_debug_dll()
+			--   debug_dll = dll
+			--   return dll
+			-- end
+
+			local function file_exists(path)
+				local stat = vim.loop.fs_stat(path)
+				return stat and stat.type == 'file'
+			end
+
+			vim.keymap.set('n', '<leader>dj', dap.down, {})
+			vim.keymap.set('n', '<leader>dk', dap.up, {})
+
+			require('dap-cs').setup({
+
+				-- Additional dap configurations can be added.
+				-- dap_configurations accepts a list of tables where each entry
+				-- represents a dap configuration. For more details do:
+				-- :help dap-configuration
+				dap_configurations = {
+					{
+						-- Must be "coreclr" or it will be ignored by the plugin
+						type = 'coreclr',
+						name = 'Attach remote',
+						mode = 'remote',
+						request = 'attach',
+
+						-- type = "coreclr",
+						-- name = "Program",
+						-- request = "launch",
+						-- env = function()
+						--   local dll = ensure_dll()
+						--   local vars = dotnet.get_environment_variables(dll.project_name, dll.absolute_project_path)
+						--   return vars or nil
+						-- end,
+						-- program = function()
+						--   local dll = ensure_dll()
+						--   local co = coroutine.running()
+						--   rebuild_project(co, dll.project_path)
+						--   if not file_exists(dll.target_path) then
+						--     error("Project has not been built, path: " .. dll.target_path)
+						--   end
+						--   return dll.target_path
+						-- end,
+						-- cwd = function()
+						--   local dll = ensure_dll()
+						--   return dll.absolute_project_path
+						-- end,
+					},
+				},
+				netcoredbg = {
+					-- the path to the executable netcoredbg which will be used for debugging.
+					-- by default, this is the "netcoredbg" executable on your PATH.
+					path = 'netcoredbg',
+				},
+			})
+		end,
+		dependencies = {
+			'mfussenegger/nvim-dap',
+			'Exafunction/codeium.nvim',
+		},
 	},
 }

@@ -22,7 +22,8 @@ end
 
 function M.toggle_diagnostic()
 	local enabled = vim.diagnostic.is_enabled()
-	vim.diagnostic.enable(not enabled)
+	vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })
+	-- vim.diagnostic.enable(not enabled)
 	M.notify_mini('󰨮 diagnostic: ' .. tostring(not enabled))
 end
 

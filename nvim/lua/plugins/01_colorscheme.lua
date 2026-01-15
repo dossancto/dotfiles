@@ -1,27 +1,29 @@
 return {
 	-- colortheme is load right after lazy setup
 	{
-		"Shatur/neovim-ayu",
+		'Shatur/neovim-ayu',
 		lazy = true,
 	},
 	{
-		"rebelot/kanagawa.nvim"
+		'rebelot/kanagawa.nvim',
 	},
 	{
-	  "vague-theme/vague.nvim",
-	  lazy = false, -- make sure we load this during startup if it is your main colorscheme
-	  priority = 1000, -- make sure to load this before all the other plugins
-	  config = function()
-		-- NOTE: you do not need to call setup if you don't want to.
-		require("vague").setup({
-		  -- optional configuration here
-		})
-		vim.cmd("colorscheme vague")
-	  end
+		'vague-theme/vague.nvim',
+		lazy = false, -- make sure we load this during startup if it is your main colorscheme
+		priority = 1000, -- make sure to load this before all the other plugins
+		config = function()
+			-- NOTE: you do not need to call setup if you don't want to.
+			-- require('vague').setup({
+			-- 	-- optional configuration here
+			-- })
+			-- vim.cmd('colorscheme vague')
+		end,
 	},
 	{
 		'sainnhe/gruvbox-material',
-  priority = 0, config = true, lazy = false
+		priority = 0,
+		config = true,
+		lazy = false,
 	},
 	-- tokyonight
 	{
@@ -37,5 +39,17 @@ return {
 				colors.bg_highlight = '#161728'
 			end,
 		},
+	},
+	-- Using lazy.nvim
+	{
+		'ribru17/bamboo.nvim',
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require('bamboo').setup({
+				-- optional configuration here
+			})
+			require('bamboo').load()
+		end,
 	},
 }

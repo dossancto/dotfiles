@@ -51,9 +51,10 @@ return {
 				menu = { border = 'rounded', draw = { treesitter = { 'lsp' } } },
 			},
 			sources = {
-				default = { 'lsp', 'path', 'snippets', 'buffer' },
+				default = { 'lsp', 'path', 'snippets', 'buffer', 'dbee' },
 				providers = {
 					lsp = { score_offset = 4 },
+					dbee = { name = 'dbee', module = 'blink.compat.source', score_offset = 1 },
 					buffer = { score_offset = 2 },
 					path = { score_offset = 2 },
 					snippets = { score_offset = -2, min_keyword_length = 2 },
@@ -75,8 +76,43 @@ return {
 		},
 		dependencies = {
 			'L3MON4D3/LuaSnip',
+			{
+				'saghen/blink.compat',
+				version = '*',
+				lazy = true,
+			},
+			{
+				'MattiasMTS/cmp-dbee',
+				enabled = true,
+				branch = 'ms/v2', -- ESSA LINHA É OBRIGATÓRIA
+				ft = { 'sql' },
+				-- dev = true,
+				dependencies = { 'kndndrj/nvim-dbee' },
+			},
+
+			{ 'rafamadriz/friendly-snippets' },
 		},
 	},
+
+	-- {
+	-- 	'saghen/blink.cmp',
+	-- 	dependencies = {
+	-- 		'MattiasMTS/cmp-dbee',
+	-- 		enabled = true,
+	-- 		branch = 'ms/v2', -- ESSA LINHA É OBRIGATÓRIA
+	-- 		ft = { 'sql' },
+	-- 		-- dev = true,
+	-- 		dependencies = { 'kndndrj/nvim-dbee' },
+	-- 	},
+	-- 	opts = {
+	-- 		sources = {
+	-- 			compat = { 'dbee' },
+	-- 			providers = {
+	-- 				dbee = { name = 'dbee', module = 'blink.compat.source' },
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 
 	-- snippet engine, for friendly-snippets
 	{
@@ -111,11 +147,35 @@ return {
 		'terrastruct/d2-vim',
 		ft = { 'd2' },
 	},
+	{
+		'pwntester/octo.nvim',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'nvim-telescope/telescope.nvim',
+			'nvim-tree/nvim-web-devicons',
+		},
+		lazy = false,
+		config = function()
+			require('octo').setup()
+		end,
+	},
 
 	-- diff view
 	{
 		'sindrets/diffview.nvim',
 		cmd = { 'DiffviewOpen' },
+		config = function()
+			require('diffview').setup({
+				view = {
+					merge_tool = {
+						-- Config for conflicted files in diff views during a merge or rebase.
+						layout = 'diff3_mixed',
+						disable_diagnostics = true, -- Temporarily disable diagnostics for diff buffers while in the view.
+						winbar_info = true, -- See |diffview-config-view.x.winbar_info|
+					},
+				},
+			})
+		end,
 	},
 
 	-- git buffer integration

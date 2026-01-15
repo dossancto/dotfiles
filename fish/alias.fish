@@ -7,3 +7,4 @@ alias tb 'npx tb'
 alias clear "printf '\033[2J\033[3J\033[1;1H'"
 alias cd="z"
 alias rm="rip"
+alias k="kubectl"
