@@ -70,6 +70,7 @@ map('n', '<leader>lk', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
 -- map("n", "<leader>lk", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 
 map('n', '<leader>la', vim.lsp.buf.code_action, { desc = 'Actions' })
+map('n', '<leader>lr', vim.lsp.buf.rename, { desc = 'Rename Symbol' })
 map('n', 'F', "<cmd> lua require('spectre').toggle() <cr>", { desc = 'Open Spectre' })
 -- map('n', '<leader>F', '<cmd>Spectre<cr>', { desc = 'Open Spectre' })
 
