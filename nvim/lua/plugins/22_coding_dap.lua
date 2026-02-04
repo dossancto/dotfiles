@@ -30,6 +30,14 @@ return {
 			-- setup adapter and config for specific language
 			local dap = require('dap')
 
+			local install_dir = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason')
+
+			dap.adapters.netcoredbg = {
+				type = 'executable',
+				command = install_dir .. '/packages/netcoredbg/netcoredbg',
+				args = { '--interpreter=vscode' },
+			}
+
 			-- dap: c/cpp/rust
 			-- req: gdb 14.0+
 			dap.adapters.gdb = {
@@ -105,19 +113,19 @@ return {
 		lazy = true,
 		keys = keymap.dapui,
 		opts = { log_level = vim.log.levels.OFF },
-		config = function(_, opts)
-			local dap, dapui = require('dap'), require('dapui')
-			dapui.setup(opts)
-			dap.listeners.after.event_initialized['dapui_config'] = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated['dapui_config'] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited['dapui_config'] = function()
-				dapui.close()
-			end
-		end,
+		-- config = function(_, opts)
+		-- 	local dap, dapui = require('dap'), require('dapui')
+		-- 	dapui.setup(opts)
+		-- 	dap.listeners.after.event_initialized['dapui_config'] = function()
+		-- 		dapui.open()
+		-- 	end
+		-- 	dap.listeners.before.event_terminated['dapui_config'] = function()
+		-- 		dapui.close()
+		-- 	end
+		-- 	dap.listeners.before.event_exited['dapui_config'] = function()
+		-- 		dapui.close()
+		-- 	end
+		-- end,
 		dependencies = {
 			'mfussenegger/nvim-dap',
 			'nvim-neotest/nvim-nio',

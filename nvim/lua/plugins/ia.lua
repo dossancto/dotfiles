@@ -23,6 +23,7 @@ return {
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			'github/copilot.vim',
+			'kkrampis/codex.nvim',
 		},
 	},
 	{

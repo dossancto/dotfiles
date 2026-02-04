@@ -11,11 +11,45 @@ local diagnostic_goto = function(next, severity)
 	end
 end
 
+-- NAVIGATION
+-- Keybinds for LSP go to reference and go to definition/implementation in vertical split
+-- Go to References in vertical split
+map('n', 'gvr', function()
+  vim.cmd('vsplit')
+end, { desc = 'LSP: Go to References (vertical split)' })
+
+map('n', '<C-h>', '<C-w>h', { desc = 'Move to left window', remap = true })
+map('n', '<C-j>', '<C-w>j', { desc = 'Move to lower window', remap = true })
+map('n', '<C-k>', '<C-w>k', { desc = 'Move to upper window', remap = true })
+map('n', '<C-l>', '<C-w>l', { desc = 'Move to right window', remap = true })
+
+-- Go to Definition in vertical split
+map('n', 'gvd', function()
+  vim.cmd('vsplit')
+end, { desc = 'LSP: Go to Definition (vertical split)' })
+
+-- Go to Implementation in vertical split
+map('n', 'gvi', function()
+  vim.cmd('vsplit')
+end, { desc = 'LSP: Go to Implementation (vertical split)' })
+
+
+-- WINDOW
+map('n', '<leader>wm',  '<cmd>lua Snacks.zen.zoom()<cr>', { desc = 'Snacks Zen Zoom' })
+
+-- TESTS
+map('n', '<leader>br', '<cmd>lua require("neotest").run.run()<cr>', { desc = 'Run nearest test' })
+map('n', '<leader>bd', '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>', { desc = 'Run test with debugger' })
+map('n', '<leader>bR', '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', { desc = 'Run tests in current file' })
+map('n', '<leader>bs', '<cmd>Neotest summary<cr>', { desc = 'Stop test' })
+map('n', '<leader>ba', '<cmd>lua require("neotest").run.attach()<cr>', { desc = 'Attach to test' })
+map('n', '<leader>bo', '<cmd>Neotest output<cr>', { desc = 'Stop test' })
+
 -- IA section
-map({ 'n', 'v' }, '<leader>aa', '<cmd>CodeCompanion<cr>', { desc = 'Open Companion' })
+map('v', '<leader>ii', ":'<,'>CodeCompanion<cr>", { desc = 'Open Companion with selection' })
 map(
 	{ 'n', 'v' },
-	'<leader>at',
+	'<leader>it',
 	'<cmd>CodeCompanionChat toggle<cr>',
 	{ desc = 'Open Companion' }
 )
@@ -27,7 +61,7 @@ map(
 )
 map(
 	'n',
-	'<leader>ac',
+	'<leader>ic',
 	'<cmd>CodeCompanionActions<cr>',
 	{ desc = 'Open Companion Help' }
 )
@@ -35,11 +69,6 @@ map(
 map('n', ';', ':', { desc = 'CMD enter command mode' })
 
 map({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
-
-map('n', '<C-h>', '<C-w>h', { desc = 'Move to left window', remap = true })
-map('n', '<C-j>', '<C-w>j', { desc = 'Move to lower window', remap = true })
-map('n', '<C-k>', '<C-w>k', { desc = 'Move to upper window', remap = true })
-map('n', '<C-l>', '<C-w>l', { desc = 'Move to right window', remap = true })
 
 -- Fix for many terminals where Ctrl-h is seen as Backspace
 map('n', '<BS>', '<C-w>h', { desc = 'Move to left window' })
@@ -255,12 +284,12 @@ M.lsp = {
 	{ 'K', vim.lsp.buf.hover, desc = 'Hover' },
 
 	{ '<C-d>', vim.diagnostic.open_float, desc = 'Line Diagnostics' },
-	{
-		'<C-k>',
-		vim.lsp.buf.signature_help,
-		mode = '',
-		desc = 'Signature Help',
-	},
+	-- {
+	-- 	'<C-k>',
+	-- 	vim.lsp.buf.signature_help,
+	-- 	mode = '',
+	-- 	desc = 'Signature Help',
+	-- },
 	{
 		'<C-a>',
 		vim.lsp.buf.code_action,
@@ -294,10 +323,13 @@ M.dap = {
 	-- REPL: provide command line input/output, better to work with mouse or dap-ui
 	{ '<Leader>dr', function() require('dap').repl.toggle() end,       desc = 'Toggle REPL' },
 }
+-- DapViewToggle
+map('n', '<leader>du', '<cmd>DapViewToggle<cr>', { desc = 'Open DAP' })
+map('n', '<leader>da', '<cmd>lua require("nvim-dap-virtual-text").setup()<cr>', { desc = 'Eval' })
 
 -- stylua: ignore
 M.dapui = {
-	{ '<Leader>du', function() require('dapui').toggle() end, desc = 'DapUI toggle' },
+-- 	{ '<Leader>du', function() require('dapui').toggle() end, desc = 'DapUI toggle' },
 	{ '<Leader>de', function() require('dapui').eval() end,   desc = 'DapUI eval' },
 }
 

@@ -54,7 +54,16 @@ return {
 				default = { 'lsp', 'path', 'snippets', 'buffer', 'dbee' },
 				providers = {
 					lsp = { score_offset = 4 },
-					dbee = { name = 'dbee', module = 'blink.compat.source', score_offset = 1 },
+					dbee = {
+						name = 'dbee',
+						module = 'blink.compat.source',
+						score_offset = 5,
+					},
+					laravel = {
+						name = 'laravel',
+						module = 'blink.compat.source',
+						score_offset = 95, -- show at a higher priority than lsp
+					},
 					buffer = { score_offset = 2 },
 					path = { score_offset = 2 },
 					snippets = { score_offset = -2, min_keyword_length = 2 },

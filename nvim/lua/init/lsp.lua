@@ -49,3 +49,22 @@ vim.lsp.config('vue_ls', {
 		},
 	},
 })
+vim.lsp.config('intelephense', {
+	settings = {
+		intelephense = {
+			files = {
+				maxSize = 2000000,
+			},
+		},
+	},
+})
+
+-- vim.lsp.config('phpactor', {
+-- 	settings = {
+-- 		phpactor = {
+-- 			files = {
+-- 				maxSize = 2000000,
+-- 			},
+-- 		},
+-- 	},
+-- })
