@@ -9,9 +9,10 @@ config = config  # noqa: F821 pylint: disable=E0602,C0103
 c.tabs.title.format = "{audio}{index}: {host}"
 # c.fonts.web.size.default = 11
 
+# 'DEFAULT': 'https://google.com/search?q={}',
 c.url.searchengines = {
 # note - if you use duckduckgo, you can make use of its built in bangs, of which there are many! https://duckduckgo.com/bangs
-        'DEFAULT': 'https://google.com/search?q={}',
+        'DEFAULT': 'https://duckduckgo.com/?q={}',
         '!cmd': 'https://command-not-found.com/{}',
         '!d': 'https://duckduckgo.com/?q={}',
         '!r':       'https://www.reddit.com/search?q={}',
