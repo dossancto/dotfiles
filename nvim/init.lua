@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.cmd("language en_US.utf8")
 
 -- basic setup
 require('init.options').load_options()
