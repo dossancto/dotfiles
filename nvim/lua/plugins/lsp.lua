@@ -1,17 +1,7 @@
-local keymap = require('init.keymaps')
-
 return {
 	{
-		'HakonHarnes/img-clip.nvim',
-		opts = {
-			filetypes = {
-				codecompanion = {
-					prompt_for_file_name = false,
-					template = '[Image]($FILE_PATH)',
-					use_absolute_path = true,
-				},
-			},
-		},
+		"mason-org/mason.nvim",
+		opts = {}
 	},
 	{
 		'DestopLine/boilersharp.nvim',
@@ -22,17 +12,6 @@ return {
 			-- Your options go here
 		},
 	},
-	-- completion
-	{
-		'OXY2DEV/markview.nvim',
-		lazy = false,
-		opts = {
-			preview = {
-				filetypes = { 'markdown', 'codecompanion' },
-				ignore_buftypes = {},
-			},
-		},
-	},
 	{
 		'saghen/blink.cmp',
 		event = 'InsertEnter',
@@ -40,7 +19,25 @@ return {
 		-- version = '1.*',
 		-- build = 'cargo build --release',
 		opts = {
-			keymap = keymap.cmp,
+			keymap = {
+				preset = 'none',
+
+				['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+
+				['<CR>'] = { 'accept', 'fallback' },
+				['<C-Tab>'] = { 'show', 'show_documentation', 'hide_documentation' },
+
+				['<Tab>'] = { 'select_next', 'fallback' },
+				['<S-Tab>'] = { 'select_prev', 'fallback' },
+
+				['<C-e>'] = { 'hide' },
+				['<C-y>'] = { 'select_and_accept' },
+
+				['<Up>'] = { 'select_prev', 'fallback' },
+				['<Down>'] = { 'select_next', 'fallback' },
+				['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
+				['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
+			},
 			completion = {
 				documentation = {
 					auto_show = true,
@@ -102,28 +99,6 @@ return {
 			{ 'rafamadriz/friendly-snippets' },
 		},
 	},
-
-	-- {
-	-- 	'saghen/blink.cmp',
-	-- 	dependencies = {
-	-- 		'MattiasMTS/cmp-dbee',
-	-- 		enabled = true,
-	-- 		branch = 'ms/v2', -- ESSA LINHA É OBRIGATÓRIA
-	-- 		ft = { 'sql' },
-	-- 		-- dev = true,
-	-- 		dependencies = { 'kndndrj/nvim-dbee' },
-	-- 	},
-	-- 	opts = {
-	-- 		sources = {
-	-- 			compat = { 'dbee' },
-	-- 			providers = {
-	-- 				dbee = { name = 'dbee', module = 'blink.compat.source' },
-	-- 			},
-	-- 		},
-	-- 	},
-	-- },
-
-	-- snippet engine, for friendly-snippets
 	{
 		'L3MON4D3/LuaSnip',
 		event = 'VeryLazy',
@@ -134,15 +109,6 @@ return {
 		end,
 		dependencies = { 'rafamadriz/friendly-snippets' },
 	},
-
-	-- comments
-	{
-		'echasnovski/mini.comment',
-		event = 'VeryLazy',
-		opts = { mappings = keymap.mini_comment },
-	},
-
-	-- todo comments
 	{
 		'folke/todo-comments.nvim',
 		cmd = { 'TodoTrouble' },
@@ -150,51 +116,6 @@ return {
 		opts = {},
 		dependencies = { 'nvim-lua/plenary.nvim' },
 	},
-
-	-- d2 diagram
-	{
-		'terrastruct/d2-vim',
-		ft = { 'd2' },
-	},
-	{
-		'pwntester/octo.nvim',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'nvim-telescope/telescope.nvim',
-			'nvim-tree/nvim-web-devicons',
-		},
-		lazy = false,
-		config = function()
-			require('octo').setup()
-		end,
-	},
-
-	-- diff view
-	{
-		'sindrets/diffview.nvim',
-		config = function()
-			require('diffview').setup({
-				view = {
-					merge_tool = {
-						-- Config for conflicted files in diff views during a merge or rebase.
-						layout = 'diff3_mixed',
-						disable_diagnostics = true, -- Temporarily disable diagnostics for diff buffers while in the view.
-						winbar_info = true, -- See |diffview-config-view.x.winbar_info|
-					},
-				},
-			})
-		end,
-	},
-
-	-- git buffer integration
-	{
-		'lewis6991/gitsigns.nvim',
-		cmd = { 'Gitsigns' },
-		lazy = false,
-		opts = {},
-	},
-
-	-- csv/tsv
 	{
 		'hat0uma/csvview.nvim',
 		cmd = { 'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle' },
@@ -212,5 +133,5 @@ return {
 				jump_prev_row = { '<S-Enter>', mode = { 'n', 'v' } },
 			},
 		},
-	},
+	}
 }

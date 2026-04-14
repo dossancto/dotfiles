@@ -1,5 +1,4 @@
 local M = {}
-local option = require('init.options')
 
 function M.check_load_lazy()
 	local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
@@ -38,10 +37,11 @@ function M.load_lazy()
 		rocks = { enabled = false },
 
 		defaults = { lazy = false, version = false },
-		checker = { enabled = option.plugins.auto_check, frequency = 86400 },
+		checker = { enabled = true, frequency = 86400 },
+		-- checker = { enabled = option.plugins.auto_check, frequency = 86400 },
 		install = {
-			missing = option.plugins.auto_install,
-			colorscheme = { option.plugins.colorscheme },
+			-- missing = option.plugins.auto_install,
+			-- colorscheme = { option.plugins.colorscheme },
 		},
 		ui = {
 			wrap = true,

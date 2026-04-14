@@ -1,13 +1,14 @@
 vim.g.mapleader = " "
 vim.cmd("language en_US.utf8")
 
--- basic setup
-require('init.options').load_options()
-require('init.keymaps').load_keymaps()
+require("configuration.options")
+require("configuration.keybinds.init")
 
--- load lazy and the plugins
-require('init.lazy_pre').check_load_lazy()
+require("init.lazy_pre").check_load_lazy()
 
--- vim.cmd("colorscheme ayu-dark")
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { '<filetype>' },
+  callback = function() vim.treesitter.start() end,
+})
 
-require('init.lsp')
+vim.cmd("colorscheme gruvbox-material")

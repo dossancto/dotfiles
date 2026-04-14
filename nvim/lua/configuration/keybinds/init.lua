@@ -1,0 +1,6 @@
+require('configuration.keybinds.ai')
+require('configuration.keybinds.editor')
+require('configuration.keybinds.git')
+require('configuration.keybinds.lsp')
+require('configuration.keybinds.navigation')
+require('configuration.keybinds.ui')
