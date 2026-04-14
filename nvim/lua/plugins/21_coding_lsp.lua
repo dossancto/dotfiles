@@ -71,7 +71,11 @@ return {
 		cmd = 'Mason',
 		build = ':MasonUpdate',
 		opts = { -- required for :Mason
-			log_level = vim.log.levels.OFF,
+			-- log_level = vim.log.levels.OFF,
+			registries = {
+				"github:mason-org/mason-registry",
+				"github:Crashdummyy/mason-registry",
+			},
 			max_concurrent_installers = 4,
 			ui = {
 				-- disable check on :Mason window
@@ -91,7 +95,7 @@ return {
 		opts = function()
 			return vim.tbl_deep_extend('keep', option.plugins.conform_opts, {
 				notify_on_error = true,
-				log_level = vim.log.levels.OFF,
+				-- log_level = vim.log.levels.OFF,
 			})
 		end,
 	},

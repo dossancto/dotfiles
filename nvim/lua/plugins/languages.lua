@@ -116,99 +116,99 @@ return {
 		},
 		cmd = { 'Laravel' },
 		keys = {
-			-- {
-			-- 	'<leader>ll',
-			-- 	function()
-			-- 		Laravel.pickers.laravel()
-			-- 	end,
-			-- 	desc = 'Laravel: Open Laravel Picker',
-			-- },
-			-- {
-			-- 	'<c-g>',
-			-- 	function()
-			-- 		Laravel.commands.run('view:finder')
-			-- 	end,
-			-- 	desc = 'Laravel: Open View Finder',
-			-- },
-			-- {
-			-- 	'<leader>la',
-			-- 	function()
-			-- 		Laravel.pickers.artisan()
-			-- 	end,
-			-- 	desc = 'Laravel: Open Artisan Picker',
-			-- },
-			-- {
-			-- 	'<leader>lt',
-			-- 	function()
-			-- 		Laravel.commands.run('actions')
-			-- 	end,
-			-- 	desc = 'Laravel: Open Actions Picker',
-			-- },
-			-- {
-			-- 	'<leader>lr',
-			-- 	function()
-			-- 		Laravel.pickers.routes()
-			-- 	end,
-			-- 	desc = 'Laravel: Open Routes Picker',
-			-- },
-			-- {
-			-- 	'<leader>lh',
-			-- 	function()
-			-- 		Laravel.run('artisan docs')
-			-- 	end,
-			-- 	desc = 'Laravel: Open Documentation',
-			-- },
-			-- {
-			-- 	'<leader>lm',
-			-- 	function()
-			-- 		Laravel.pickers.make()
-			-- 	end,
-			-- 	desc = 'Laravel: Open Make Picker',
-			-- },
-			-- {
-			-- 	'<leader>lc',
-			-- 	function()
-			-- 		Laravel.pickers.commands()
-			-- 	end,
-			-- 	desc = 'Laravel: Open Commands Picker',
-			-- },
-			-- {
-			-- 	'<leader>lo',
-			-- 	function()
-			-- 		Laravel.pickers.resources()
-			-- 	end,
-			-- 	desc = 'Laravel: Open Resources Picker',
-			-- },
-			-- {
-			-- 	'<leader>lp',
-			-- 	function()
-			-- 		Laravel.commands.run('command_center')
-			-- 	end,
-			-- 	desc = 'Laravel: Open Command Center',
-			-- },
-			-- {
-			-- 	'<leader>lu',
-			-- 	function()
-			-- 		Laravel.commands.run('hub')
-			-- 	end,
-			-- 	desc = 'Laravel Artisan hub',
-			-- },
-			-- {
-			-- 	'gf',
-			-- 	function()
-			-- 		local ok, res = pcall(function()
-			-- 			if Laravel.app('gf').cursorOnResource() then
-			-- 				return "<cmd>lua Laravel.commands.run('gf')<cr>"
-			-- 			end
-			-- 		end)
-			-- 		if not ok or not res then
-			-- 			return 'gf'
-			-- 		end
-			-- 		return res
-			-- 	end,
-			-- 	expr = true,
-			-- 	noremap = true,
-			-- },
+			{
+				'<leader>lll',
+				function()
+					Laravel.pickers.laravel()
+				end,
+				desc = 'Laravel: Open Laravel Picker',
+			},
+			{
+				'<c-g>',
+				function()
+					Laravel.commands.run('view:finder')
+				end,
+				desc = 'Laravel: Open View Finder',
+			},
+			{
+				'<leader>lla',
+				function()
+					Laravel.pickers.artisan()
+				end,
+				desc = 'Laravel: Open Artisan Picker',
+			},
+			{
+				'<leader>llt',
+				function()
+					Laravel.commands.run('actions')
+				end,
+				desc = 'Laravel: Open Actions Picker',
+			},
+			{
+				'<leader>llr',
+				function()
+					Laravel.pickers.routes()
+				end,
+				desc = 'Laravel: Open Routes Picker',
+			},
+			{
+				'<leader>llh',
+				function()
+					Laravel.run('artisan docs')
+				end,
+				desc = 'Laravel: Open Documentation',
+			},
+			{
+				'<leader>llm',
+				function()
+					Laravel.pickers.make()
+				end,
+				desc = 'Laravel: Open Make Picker',
+			},
+			{
+				'<leader>llc',
+				function()
+					Laravel.pickers.commands()
+				end,
+				desc = 'Laravel: Open Commands Picker',
+			},
+			{
+				'<leader>llo',
+				function()
+					Laravel.pickers.resources()
+				end,
+				desc = 'Laravel: Open Resources Picker',
+			},
+			{
+				'<leader>llp',
+				function()
+					Laravel.commands.run('command_center')
+				end,
+				desc = 'Laravel: Open Command Center',
+			},
+			{
+				'<leader>llu',
+				function()
+					Laravel.commands.run('hub')
+				end,
+				desc = 'Laravel Artisan hub',
+			},
+			{
+				'lgf',
+				function()
+					local ok, res = pcall(function()
+						if Laravel.app('gf').cursorOnResource() then
+							return "<cmd>lua Laravel.commands.run('gf')<cr>"
+						end
+					end)
+					if not ok or not res then
+						return 'gf'
+					end
+					return res
+				end,
+				expr = true,
+				noremap = true,
+			},
 		},
 		opts = {
 			features = {

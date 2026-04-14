@@ -43,10 +43,11 @@ map('n', '<leader>bd', '<cmd>lua require("neotest").run.run({strategy = "dap"})<
 map('n', '<leader>bR', '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', { desc = 'Run tests in current file' })
 map('n', '<leader>bs', '<cmd>Neotest summary<cr>', { desc = 'Stop test' })
 map('n', '<leader>ba', '<cmd>lua require("neotest").run.attach()<cr>', { desc = 'Attach to test' })
-map('n', '<leader>bo', '<cmd>Neotest output<cr>', { desc = 'Stop test' })
+map('n', '<leader>bn', '<cmd>Neotest output<cr>', { desc = 'Stop test' })
 
 -- IA section
 map('v', '<leader>ii', ":'<,'>CodeCompanion<cr>", { desc = 'Open Companion with selection' })
+map('v', '<leader>ia', ":'<,'>CodeCompanion /docs<cr>", { desc = 'Write documentation for the selected code' })
 map(
 	{ 'n', 'v' },
 	'<leader>it',
@@ -61,7 +62,7 @@ map(
 )
 map(
 	'n',
-	'<leader>ic',
+	'<leader>io',
 	'<cmd>CodeCompanionActions<cr>',
 	{ desc = 'Open Companion Help' }
 )
@@ -107,6 +108,7 @@ map('n', '<Leader>fm', function()
 	vim.lsp.buf.format({ async = true })
 end, { desc = 'Format current buffer with LSP' })
 
+map('n', '<Leader>bo', ":%bd|e#|bd#<CR>", { desc = 'Close other buffers' })
 -- keymaps generic
 
 M.basic = {

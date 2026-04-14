@@ -26,7 +26,7 @@ source ~/.config/fish/alias.fish
 
 zoxide init fish | source
 # source ~/.asdf/plugins/dotnet/set-dotnet-env.fish
-~/.local/bin/mise activate fish | source
+# ~/.local/bin/mise activate fish | source
 
 set -x WINEPREFIX "/mnt/nvme0n1p5/projects/wineprefix"
 set -gx EDITOR nvim
