@@ -1,4 +1,19 @@
 return {
+
+	{
+		'MattesGroeger/vim-bookmarks',
+		config = function()
+			-- Configure vim-bookmarks here. For example, to change the bookmark sign to a different character:
+			vim.g.bookmark_sign = '' -- Using a Nerd Font icon, for example
+			vim.g.bookmark_highlight_group = 'Comment' -- Change the highlight group
+
+			vim.g.bookmark_auto_save = 1
+			vim.g.bookmark_save_per_working_dir = 1
+
+			-- You can add other configurations as well.
+		end,
+	},
+
 	{
 		"nvim-pack/nvim-spectre",
 		event = "BufRead",
