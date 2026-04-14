@@ -48,14 +48,9 @@ return {
 				menu = { border = 'rounded', draw = { treesitter = { 'lsp' } } },
 			},
 			sources = {
-				default = { 'lsp', 'path', 'snippets', 'buffer', 'dbee' },
+				default = { 'lsp', 'path', 'snippets', 'buffer' },
 				providers = {
 					lsp = { score_offset = 4 },
-					dbee = {
-						name = 'dbee',
-						module = 'blink.compat.source',
-						score_offset = 5,
-					},
 					laravel = {
 						name = 'laravel',
 						module = 'blink.compat.source',
@@ -87,15 +82,6 @@ return {
 				version = '*',
 				lazy = true,
 			},
-			{
-				'MattiasMTS/cmp-dbee',
-				enabled = true,
-				branch = 'ms/v2', -- ESSA LINHA É OBRIGATÓRIA
-				ft = { 'sql' },
-				-- dev = true,
-				dependencies = { 'kndndrj/nvim-dbee' },
-			},
-
 			{ 'rafamadriz/friendly-snippets' },
 		},
 	},
