@@ -1,4 +1,5 @@
 require('configuration.keybinds.ai')
+require('configuration.keybinds.dap')
 require('configuration.keybinds.editor')
 require('configuration.keybinds.git')
 require('configuration.keybinds.lsp')
