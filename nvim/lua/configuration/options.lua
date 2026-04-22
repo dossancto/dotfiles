@@ -17,4 +17,6 @@ opt.spelllang = { 'pt_br', 'en' }
 vim.opt.textwidth = 140
 vim.opt.colorcolumn = '+0' -- Or +0, depending on preference
 
-
+opt.wrap = false
+opt.textwidth = 0
+opt.wrapmargin = 0

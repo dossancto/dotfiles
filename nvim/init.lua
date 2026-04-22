@@ -5,6 +5,5 @@ require("configuration.options")
 require("configuration.keybinds.init")
 
 require("init.lazy_pre").check_load_lazy()
-vim.cmd("colorscheme gruvbox-material")
-
+vim.cmd("colorscheme melange")
 require("init.lsp")
