@@ -25,8 +25,22 @@ source ~/.config/fish/alias.fish
 
 
 zoxide init fish | source
-# source ~/.asdf/plugins/dotnet/set-dotnet-env.fish
-# ~/.local/bin/mise activate fish | source
+
+# ASDF configuration code
+if test -z $ASDF_DATA_DIR
+    set _asdf_shims "$HOME/.asdf/shims"
+else
+    set _asdf_shims "$ASDF_DATA_DIR/shims"
+end
+
+# Do not use fish_add_path (added in Fish 3.2) because it
+# potentially changes the order of items in PATH
+if not contains $_asdf_shims $PATH
+    set -gx --prepend PATH $_asdf_shims
+end
+set --erase _asdf_shims
+
+~/.local/bin/mise activate fish | source
 
 set -x WINEPREFIX "/mnt/nvme0n1p5/projects/wineprefix"
 set -gx EDITOR nvim
