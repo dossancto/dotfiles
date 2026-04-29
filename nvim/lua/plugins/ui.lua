@@ -8,7 +8,7 @@ return {
 			bigfile = { enabled = true },
 			dashboard = { enabled = true },
 			explorer = { enabled = true },
-			indent = { enabled = true },
+			indent = { enabled = false },
 			input = { enabled = true },
 			notifier = {
 				enabled = true,
@@ -89,24 +89,29 @@ return {
 			{ "gy",              function() Snacks.picker.lsp_type_definitions() end,                    desc = "Goto T[y]pe Definition" },
 			{ "gai",             function() Snacks.picker.lsp_incoming_calls() end,                      desc = "C[a]lls Incoming" },
 			{ "gao",             function() Snacks.picker.lsp_outgoing_calls() end,                      desc = "C[a]lls Outgoing" },
-			{ "gs",              function() Snacks.picker.lsp_symbols() end,                             desc = "LSP Symbols" },
-			{ "<leader>sS",      function() Snacks.picker.lsp_workspace_symbols() end,                   desc = "LSP Workspace Symbols" },
+			{ "gs",              function() Snacks.picker.lsp_symbols() end,                             desc = "LSP Symbols" }, {
+			"<leader>sS",
+			function()
+				Snacks.picker.lsp_workspace_symbols()
+			end,
+			desc = "LSP Workspace Symbols"
+		},
 			-- Other
-			{ "<leader>z",       function() Snacks.zen() end,                                            desc = "Toggle Zen Mode" },
-			{ "<leader>Z",       function() Snacks.zen.zoom() end,                                       desc = "Toggle Zoom" },
-			{ "<leader>wm",      function() Snacks.zen.zoom() end,                                       desc = "Toggle Zoom" },
-			{ "<leader>.",       function() Snacks.scratch() end,                                        desc = "Toggle Scratch Buffer" },
-			{ "<leader>S",       function() Snacks.scratch.select() end,                                 desc = "Select Scratch Buffer" },
-			{ "<leader>n",       function() Snacks.notifier.show_history() end,                          desc = "Notification History" },
-			{ "<leader>bd",      function() Snacks.bufdelete() end,                                      desc = "Delete Buffer" },
-			{ "<leader>cR",      function() Snacks.rename.rename_file() end,                             desc = "Rename File" },
-			{ "<leader>gB",      function() Snacks.gitbrowse() end,                                      desc = "Git Browse",                 mode = { "n", "v" } },
-			{ "<leader>gg",      function() Snacks.lazygit() end,                                        desc = "Lazygit" },
-			{ "<leader>un",      function() Snacks.notifier.hide() end,                                  desc = "Dismiss All Notifications" },
-			{ "<c-/>",           function() Snacks.terminal() end,                                       desc = "Toggle Terminal" },
-			{ "<c-_>",           function() Snacks.terminal() end,                                       desc = "which_key_ignore" },
-			{ "]]",              function() Snacks.words.jump(vim.v.count1) end,                         desc = "Next Reference",             mode = { "n", "t" } },
-			{ "[[",              function() Snacks.words.jump(-vim.v.count1) end,                        desc = "Prev Reference",             mode = { "n", "t" } },
+			{ "<leader>z",  function() Snacks.zen() end,                     desc = "Toggle Zen Mode" },
+			{ "<leader>Z",  function() Snacks.zen.zoom() end,                desc = "Toggle Zoom" },
+			{ "<leader>wm", function() Snacks.zen.zoom() end,                desc = "Toggle Zoom" },
+			{ "<leader>.",  function() Snacks.scratch() end,                 desc = "Toggle Scratch Buffer" },
+			{ "<leader>S",  function() Snacks.scratch.select() end,          desc = "Select Scratch Buffer" },
+			{ "<leader>n",  function() Snacks.notifier.show_history() end,   desc = "Notification History" },
+			{ "<leader>bd", function() Snacks.bufdelete() end,               desc = "Delete Buffer" },
+			{ "<leader>cR", function() Snacks.rename.rename_file() end,      desc = "Rename File" },
+			{ "<leader>gB", function() Snacks.gitbrowse() end,               desc = "Git Browse",               mode = { "n", "v" } },
+			{ "<leader>gg", function() Snacks.lazygit() end,                 desc = "Lazygit" },
+			{ "<leader>un", function() Snacks.notifier.hide() end,           desc = "Dismiss All Notifications" },
+			{ "<c-/>",      function() Snacks.terminal() end,                desc = "Toggle Terminal" },
+			{ "<c-_>",      function() Snacks.terminal() end,                desc = "which_key_ignore" },
+			{ "]]",         function() Snacks.words.jump(vim.v.count1) end,  desc = "Next Reference",           mode = { "n", "t" } },
+			{ "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference",           mode = { "n", "t" } },
 			{
 				"<leader>N",
 				desc = "Neovim News",
@@ -136,6 +141,11 @@ return {
 					end
 					_G.bt = function()
 						Snacks.debug.backtrace()
+					end
+
+					-- Enable Inlay Hints if the Neovim version supports it
+					if vim.lsp.inlay_hint then
+						vim.lsp.inlay_hint.enable(true)
 					end
 
 					-- Override print to use snacks for `:=` command

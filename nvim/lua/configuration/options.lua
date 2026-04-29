@@ -13,10 +13,13 @@ opt.smartcase = true
 opt.clipboard = 'unnamedplus'
 
 opt.spelllang = { 'pt_br', 'en' }
+opt.spell = true
 
-vim.opt.textwidth = 140
-vim.opt.colorcolumn = '+0' -- Or +0, depending on preference
+opt.textwidth = 140
+opt.colorcolumn = '+0'
 
 opt.wrap = false
-opt.textwidth = 0
 opt.wrapmargin = 0
+
+opt.number = true
+opt.relativenumber = true

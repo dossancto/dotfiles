@@ -1,9 +1,6 @@
 return {
 	{
 		'sainnhe/gruvbox-material',
-		priority = 10000,
-		config = true,
-		lazy = false,
 	},
 	{
 		'rebelot/kanagawa.nvim'
@@ -25,5 +22,6 @@ return {
 	{ "savq/melange-nvim" },
 	{
 		"xero/miasma.nvim",
-	}
+	},
+	{ "vague-theme/vague.nvim" },
 }

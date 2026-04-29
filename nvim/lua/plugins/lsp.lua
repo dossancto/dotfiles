@@ -82,6 +82,7 @@ return {
 				version = '*',
 				lazy = true,
 			},
+			{ 'saghen/blink.lib' },
 			{ 'rafamadriz/friendly-snippets' },
 		},
 	},
