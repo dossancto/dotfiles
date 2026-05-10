@@ -1,10 +1,10 @@
 return {
-	{
-		'sainnhe/gruvbox-material',
-	},
-	{
-		'rebelot/kanagawa.nvim'
-	},
+	-- {
+	-- 	'sainnhe/gruvbox-material',
+	-- },
+	-- {
+	-- 	'rebelot/kanagawa.nvim'
+	-- },
 	{
 		'datsfilipe/min-theme.nvim',
 		opt = {
@@ -19,7 +19,7 @@ return {
 			},
 		}
 	},
-	{ "savq/melange-nvim" },
+	-- { "savq/melange-nvim" },
 	{
 		"xero/miasma.nvim",
 	},

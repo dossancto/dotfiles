@@ -13,9 +13,9 @@ map('n', '<leader>lj', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
 
 map('n', '<leader>lk', diagnostic_goto(false,  'ERROR'), { desc = 'Prev Error' })
 
-map('n', '<leader>[i', diagnostic_goto(true), { desc = 'Next Error' })
+map('n', '<leader>[w', diagnostic_goto(true), { desc = 'Next Error' })
 
-map('n', '<leader>]i', diagnostic_goto(false), { desc = 'Prev Error' })
+map('n', '<leader>]w', diagnostic_goto(false), { desc = 'Prev Error' })
 
 map('n', '<leader>la', vim.lsp.buf.code_action, { desc = 'Actions' })
 

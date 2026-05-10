@@ -25,23 +25,23 @@ vim.lsp.config('roslyn', {
 })
 
 -- Inside your snacks config -> init -> callback function
-vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
-	callback = function()
-		-- ... your other settings ...
-
-		-- Enable Treesitter highlighting globally
-		-- (This effectively does what the Snacks toggle does manually)
-		vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-			callback = function()
-				local buf = vim.api.nvim_get_current_buf()
-				-- Check if a treesitter parser exists for the current filetype
-				local success, _ = pcall(vim.treesitter.get_parser, buf)
-				if success then
-					vim.treesitter.stop(buf) -- Reset
-					vim.treesitter.start(buf) -- Start
-				end
-			end,
-		})
-	end,
-})
+-- vim.api.nvim_create_autocmd("User", {
+-- 	pattern = "VeryLazy",
+-- 	callback = function()
+-- 		-- ... your other settings ...
+--
+-- 		-- Enable Treesitter highlighting globally
+-- 		-- (This effectively does what the Snacks toggle does manually)
+-- 		vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+-- 			callback = function()
+-- 				local buf = vim.api.nvim_get_current_buf()
+-- 				-- Check if a treesitter parser exists for the current filetype
+-- 				local success, _ = pcall(vim.treesitter.get_parser, buf)
+-- 				if success then
+-- 					vim.treesitter.stop(buf) -- Reset
+-- 					vim.treesitter.start(buf) -- Start
+-- 				end
+-- 			end,
+-- 		})
+-- 	end,
+-- })

@@ -26,7 +26,7 @@ return {
 		lazy = false,
 		opts = {
 			-- or "fzf-lua" or "snacks" or "default"
-			picker = "telescope",
+			picker = "snacks",
 			-- bare Octo command opens picker of commands
 			enable_builtin = true,
 		},

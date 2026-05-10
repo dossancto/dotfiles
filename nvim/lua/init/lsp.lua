@@ -69,11 +69,11 @@ vim.lsp.config('intelephense', {
 -- 	},
 -- })
 
-require("nvim-treesitter")
-  .install({
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "yaml",
-  }, { summary = true, max_jobs = 10 })
-  :wait(1800000)
+-- require("nvim-treesitter")
+--   .install({
+--     "lua",
+--     "markdown",
+--     "markdown_inline",
+--     "yaml",
+--   }, { summary = true, max_jobs = 10 })
+--   :wait(1800000)
