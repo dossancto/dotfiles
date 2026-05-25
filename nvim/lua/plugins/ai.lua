@@ -8,24 +8,28 @@ return {
 			'kkrampis/codex.nvim',
 		},
 		opts = {
-			prompt_library = {
-				["docs"] = {
-					interaction = "inline",
-					name = "123",
+			display = {
+				action_palette = {
+					width = 95,
+					height = 10,
+					prompt = "Prompt ", -- Prompt used for interactive LLM calls
+					provider = "default", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
 					opts = {
-						alias = "docs",
-						interaction = "inline",
-						auto_submit = true,
-						modes = { "v", "n" },
-						placement = "replace",
+						show_preset_actions = true, -- Show the preset actions in the action palette?
+						show_preset_prompts = true, -- Show the preset prompts in the action palette?
+						title = "CodeCompanion actions", -- The title of the action palette
 					},
-					description = "Generate exhaustive, implementation-free documentation",
-					prompts = {
-						{
-							role = "system",
-							content =
-							[[You are an expert technical writer specializing in C# and Docusaurus.
-Your goal is to write documentation so thorough that a developer never needs to check the source code to understand how to use it.
+				},
+			},
+
+			prompt_library = {
+				markdown = {
+					dirs = {
+						vim.fn.getcwd() .. "/.prompts", -- Can be relative
+						"~/.dotfiles/ai/prompts/", -- Or absolute paths
+					},
+				},
+			},
 
 ### Strict Rules:
 1. **No Redundancy**: Never use "Gets or sets" for C# properties. Start directly with the description of the value or state the property represents.

@@ -1,10 +1,9 @@
 return {
-	-- {
-	-- 	'sainnhe/gruvbox-material',
-	-- },
-	-- {
-	-- 	'rebelot/kanagawa.nvim'
-	-- },
+	{
+		'sainnhe/gruvbox-material',
+	},
+	{ 'alexvzyl/nordic.nvim' },
+	{ "vimcolorschemes/olive-crt.nvim" },
 	{
 		'datsfilipe/min-theme.nvim',
 		opt = {

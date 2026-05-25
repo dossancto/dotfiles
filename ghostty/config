@@ -1,1 +1,3 @@
-background = 170a0a
+background = 181818
+font-family = "JetBrains Mono"
+keybind = ctrl+enter=unbind

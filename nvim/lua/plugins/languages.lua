@@ -32,6 +32,7 @@ return {
 					return {
 						path = vim.fs.joinpath(razor_extension_path,
 							"Microsoft.VisualStudioCode.RazorExtension.dll"),
+						exe = "roslyn-language-server", 
 						args = {
 							"--razorSourceGenerator="
 							.. vim.fs.joinpath(razor_extension_path,
@@ -80,7 +81,7 @@ return {
 		},
 		keys = {
 			{ "<leader>lil", function() Laravel.pickers.laravel() end,              desc = "Laravel: Open Laravel Picker" },
-			{ "<c-g>",      function() Laravel.commands.run("view:finder") end,    desc = "Laravel: Open View Finder" },
+			{ "<c-g>",       function() Laravel.commands.run("view:finder") end,    desc = "Laravel: Open View Finder" },
 			{ "<leader>lia", function() Laravel.pickers.artisan() end,              desc = "Laravel: Open Artisan Picker" },
 			{ "<leader>lit", function() Laravel.commands.run("actions") end,        desc = "Laravel: Open Actions Picker" },
 			{ "<leader>lir", function() Laravel.pickers.routes() end,               desc = "Laravel: Open Routes Picker" },
