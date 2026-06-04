@@ -27,8 +27,6 @@ vim.lsp.config('roslyn', {
 vim.api.nvim_create_autocmd("User", {
 	pattern = "VeryLazy",
 	callback = function()
-		local ts_active_on = { "*.ex", "*.exs", "*.eex", "*.heex" }
-
 		vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 			callback = function()
 				local buf = vim.api.nvim_get_current_buf()
@@ -38,7 +36,6 @@ vim.api.nvim_create_autocmd("User", {
 					vim.treesitter.start(buf) -- Start
 				end
 			end,
-			pattern = ts_active_on,
 		})
 	end,
 })
