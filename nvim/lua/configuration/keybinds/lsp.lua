@@ -10,8 +10,10 @@ local diagnostic_goto = function(next, severity)
 end
 
 map('n', '<leader>lj', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
+map('n', '<leader>lk', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
 
-map('n', '<leader>lk', diagnostic_goto(false,  'ERROR'), { desc = 'Prev Error' })
+map('n', '<leader>lw', diagnostic_goto(true, nil), { desc = 'Next Error' })
+map('n', '<leader>lq', diagnostic_goto(false, nil), { desc = 'Prev Error' })
 
 map('n', '<leader>[w', diagnostic_goto(true), { desc = 'Next Error' })
 

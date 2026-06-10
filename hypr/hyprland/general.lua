@@ -105,7 +105,7 @@ hl.config({
         dim_special = 0.2
     },
     animations = {
-        enabled = true
+        enabled = false
     },
     dwindle = {
         preserve_split = true,
@@ -279,7 +279,7 @@ hl.config({
         animate_manual_resizes = false,
         animate_mouse_windowdragging = false,
         enable_swallow = false,
-        swallow_regex = "(foot|kitty|allacritty|Alacritty)",
+        swallow_regex = "(allacritty|kitty|foot|Alacritty)",
         on_focus_under_fullscreen = 2,
         allow_session_lock_restore = true,
         session_lock_xray = true,
