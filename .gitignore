@@ -1,3 +1,4 @@
 qutebrowser/bookmarks/urls
 qutebrowser/qsettings/QtProject.conf
 qutebrowser/quickmarks
+fish/completions/pam.fish
