@@ -10,12 +10,12 @@ return {
 		},
 
 		dependencies = {
-			{
-				-- By loading as a dependencies, we ensure that we are available to set
-				-- the handlers for Roslyn.
-				'tris203/rzls.nvim',
-				config = true,
-			},
+			-- {
+			-- 	-- By loading as a dependencies, we ensure that we are available to set
+			-- 	-- the handlers for Roslyn.
+			-- 	'tris203/rzls.nvim',
+			-- 	config = true,
+			-- },
 		},
 
 		extensions = {
