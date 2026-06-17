@@ -147,6 +147,9 @@ hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ tog
 hl.bind("SUPER + ALT + M", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"),
 	{ locked = true, description = "Media: Toggle mic" })
 
+hl.bind("F12", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"),
+	{ locked = true, description = "Media: Toggle mic" })
+
 --#!
 --##! Window
 --# Focusing
@@ -198,7 +201,7 @@ hl.bind("SUPER + P", hl.dsp.window.pin(), { description = "Window: Pin" })
 
 --#/# bind = SUPER+ALT, Hash,, -- Send to workspace -- (1, 2, 3,...)
 for i = 1, 10 do
-	hl.bind("SUPER + ALT + " .. (i % 10), function()
+	hl.bind("SUPER + SHIFT + " .. (i % 10), function()
 		hl.dispatch(hl.dsp.window.move({ workspace = workspace_in_group(i), follow = false }))
 	end, { description = "Window: Send to workspace " .. i })
 end
