@@ -17,13 +17,11 @@ return {
 	{
 		'lewis6991/gitsigns.nvim',
 		cmd = { 'Gitsigns' },
-		lazy = false,
 		opts = {},
 	},
 	{
 		"pwntester/octo.nvim",
 		cmd = "Octo",
-		lazy = false,
 		opts = {
 			-- or "fzf-lua" or "snacks" or "default"
 			picker = "snacks",

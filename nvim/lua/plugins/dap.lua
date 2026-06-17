@@ -153,7 +153,6 @@ return {
 	},
 	{
 		'nicholasmata/nvim-dap-cs',
-		lazy = false,
 		config = function()
 			local dap = require('dap')
 			dap.set_log_level('TRACE')

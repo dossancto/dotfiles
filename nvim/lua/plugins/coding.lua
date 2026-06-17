@@ -26,7 +26,6 @@ return {
 	},
 	{
 		'HiPhish/rainbow-delimiters.nvim',
-		lazy = true,
 		submodules = false,
 		config = function()
 			local rainbow = require('rainbow-delimiters')
