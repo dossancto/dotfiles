@@ -2,7 +2,7 @@ vim.g.mapleader = " "
 vim.cmd("language en_US.utf8")
 
 require("init.lazy_pre").check_load_lazy()
-vim.cmd.colorscheme("nordic")
+vim.cmd.colorscheme("gruvbox-material")
 require("init.lsp")
 require("configuration.post_options")
 

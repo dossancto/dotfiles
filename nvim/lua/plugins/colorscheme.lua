@@ -1,6 +1,7 @@
 return {
 	{
-		'sainnhe/gruvbox-material',
+		'custom-gruvbox-material',
+		dir = '~/.dotfiles/nvim/plugins/gruvbox-material'
 	},
 	{ 'alexvzyl/nordic.nvim' },
 	{ "vimcolorschemes/olive-crt.nvim" },
