@@ -66,9 +66,14 @@ hl.bind("SUPER + V", hl.dsp.exec_cmd(
 hl.bind("SUPER + Period", hl.dsp.exec_cmd(
 		qsIsAlive .. " || pkill fuzzel || " .. hyprScripts .. "/fuzzel-emoji.sh copy"),
 	{ description = "Utilities: Emoji >> clipboard" })
-hl.bind("SUPER + SHIFT + S", hl.dsp.global("quickshell:regionScreenshot"), { description = "Utilities: Screen snip" })
-hl.bind("SUPER + SHIFT + S",
-	hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || hyprshot --freeze --clipboard-only --mode region --silent"))
+
+hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("flock -n -o /tmp/rishot.lock qs -c rishot"))
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd("flock -n -o /tmp/rishot.lock env RISHOT_MODE=monitor qs -c rishot"))
+
+-- hl.bind("SUPER + SHIFT + S", hl.dsp.global("quickshell:regionScreenshot"), { description = "Utilities: Screen snip" })
+-- hl.bind("SUPER + SHIFT + S",
+-- 	hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || hyprshot --freeze --clipboard-only --mode region --silent"))
+
 hl.bind("SUPER + SHIFT + A", hl.dsp.global("quickshell:regionSearch"), { description = "Utilities: Google Lens" })
 hl.bind("SUPER + SHIFT + A", hl.dsp.exec_cmd(qsIsAlive .. " || pidof slurp || " .. hyprScripts .. "/snip_to_search.sh"))
 --# OCR
