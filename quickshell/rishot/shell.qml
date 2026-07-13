@@ -397,11 +397,6 @@ ShellRoot {
     }
 
     function doUpload() {
-        var tmp = "/tmp/rishot-upload.png";
-        grabTo(tmp, function (ok) {
-            if (ok) uploadProc.run(tmp);
-            else Qt.quit();
-        });
     }
 
     Process {
@@ -440,23 +435,6 @@ ShellRoot {
             running = true;
         }
         onExited: (code) => { console.log("rishot: wl-copy exit " + code); Qt.quit(); }
-    }
-
-    Process {
-        id: uploadProc
-        stdout: StdioCollector { id: uploadOut }
-        function run(file) {
-            command = ["curl", "-sf", "--max-time", "30", "-A", "Mozilla/5.0", "-F", "reqtype=fileupload",
-                "-F", "time=72h", "-F", "fileToUpload=@" + file,
-                "https://litterbox.catbox.moe/resources/internals/api.php"];
-            running = true;
-        }
-        onExited: (code) => {
-            var url = uploadOut.text.trim();
-            console.log("rishot: upload exit " + code + " url=" + JSON.stringify(url));
-            if (code === 0 && url.indexOf("http") === 0) urlCopyProc.run(url);
-            else Qt.quit();
-        }
     }
 
     Process {

@@ -81,7 +81,7 @@ Singleton {
     }
 
     function openPublicWifiPortal() {
-        Quickshell.execDetached(["xdg-open", "https://nmcheck.gnome.org/"]) // From some StackExchange thread, seems to work
+        // Quickshell.execDetached(["xdg-open", "https://nmcheck.gnome.org/"]) // From some StackExchange thread, seems to work
     }
 
     function changePassword(network: WifiAccessPoint, password: string, username = ""): void {
