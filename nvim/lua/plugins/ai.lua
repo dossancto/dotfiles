@@ -4,7 +4,7 @@ return {
 		dependencies = {
 			-- 'nvim-lua/plenary.nvim',
 			'nvim-treesitter/nvim-treesitter',
-			'github/copilot.vim',
+			-- 'github/copilot.vim',
 			-- 'kkrampis/codex.nvim',
 		},
 		opts = {
@@ -31,5 +31,11 @@ return {
 				},
 			},
 		},
+	},
+	{
+		"supermaven-inc/supermaven-nvim",
+		config = function()
+			require("supermaven-nvim").setup({})
+		end,
 	},
 }

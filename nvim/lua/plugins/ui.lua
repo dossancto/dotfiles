@@ -6,8 +6,8 @@ return {
 		---@type snacks.Config
 		opts = {
 			bigfile = { enabled = true },
-			dashboard = { enabled = true },
-			explorer = { enabled = true },
+			dashboard = { enabled = false },
+			explorer = { enabled = false },
 			indent = { enabled = false },
 			input = { enabled = true },
 			notifier = {
@@ -19,7 +19,7 @@ return {
 			scope = { enabled = true },
 			scroll = { enabled = true },
 			statuscolumn = { enabled = true },
-			words = { enabled = true },
+			words = { enabled = false },
 			styles = {
 				notification = {
 					-- wo = { wrap = true } -- Wrap notifications

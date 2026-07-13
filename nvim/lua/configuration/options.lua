@@ -13,7 +13,7 @@ opt.smartcase = true
 opt.clipboard = 'unnamedplus'
 
 opt.spelllang = { 'pt_br', 'en' }
-opt.spell = true
+opt.spell = false
 
 opt.textwidth = 140
 opt.colorcolumn = '+0'
