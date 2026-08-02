@@ -1,5 +1,5 @@
 alias c "wl-copy"
-alias ls 'exa --icons'
+alias ls 'exa --icons auto'
 alias g 'git'
 alias d 'docker'
 alias tf 'tofu'
