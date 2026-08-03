@@ -413,6 +413,24 @@ Item {
             anchors.centerIn: parent
             spacing: 9 * pill.s
 
+	    Item {
+	        id: battery_level_closed
+	        visible: Battery.pct < 35
+	        anchors.verticalCenter: parent.verticalCenter
+	        width: 17 * pill.s
+	        height: 17 * pill.s
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: Battery.pct + "%"
+                    color: Theme.vermLit
+                    font.family: Theme.font
+                    font.pixelSize: 10 * pill.s
+                    font.weight: Font.DemiBold
+                    font.features: { "tnum": 1 }
+                }
+	    }
+
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: HyprlandXkb.currentLayoutCode ?? "123"
