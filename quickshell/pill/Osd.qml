@@ -3,6 +3,7 @@ import Quickshell.Widgets
 import Quickshell.Services.Pipewire
 import Quickshell.Services.Mpris
 import "Singletons"
+import qs.Components.shared.Icons
 
 Item {
     id: root

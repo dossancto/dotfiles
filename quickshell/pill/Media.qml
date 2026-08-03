@@ -5,6 +5,7 @@ import QtQuick.Effects
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Now-playing card. Album art bleeds edge-to-edge on the left, faded into the

@@ -6,7 +6,9 @@ import Quickshell.Io
 import Quickshell.Networking
 import Quickshell.Bluetooth
 import Quickshell.Services.Notifications
-import "Singletons"
+import qs
+import qs.Singletons
+import qs.Components.shared.Icons
 
 /**
  * 繋 LINK surface: connectivity rows (auto-detected Netz, Bluetooth) over the
@@ -25,6 +27,7 @@ PillSurface {
     mBottom: 13
 
     property string subview: "main"
+    property int keyboardFocusIndex: -1
 
     readonly property real desiredW: (subview === "wifi" ? 272 : subview === "bt" ? 286 : 330) * s
 
@@ -191,6 +194,34 @@ PillSurface {
         }
     }
 
+    component IconChip: Rectangle {
+        id: chip
+        property string glyph: ""
+        property bool on: false
+        signal toggled()
+
+        width: 26 * root.s
+        height: 26 * root.s
+        radius: 8 * root.s
+        color: chip.on ? Theme.frameBg : "transparent"
+        border.width: 1
+        border.color: chip.on ? Theme.frameBorder : Theme.border
+
+        GlyphIcon {
+            anchors.centerIn: parent
+            width: 15 * root.s
+            height: 15 * root.s
+            name: chip.glyph
+            color: chip.on ? Theme.vermLit : Theme.iconDim
+            stroke: 1.7
+        }
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: chip.toggled()
+        }
+    }
+
     /**
      * Single inbox entry: icon tile or diamond, body text, ×N coalesce badge,
      * age label that cross-fades into a dismiss glyph on hover. Critical
@@ -352,6 +383,55 @@ PillSurface {
             NumberAnimation { duration: Motion.standard; easing.type: Motion.easeStandard }
         }
 
+        Keys.onPressed: (event) => {
+	    if(event.text === "c")
+	    {
+	        Notifs.clearAll();
+	        return
+	    }
+
+	    if(event.text === "n")
+	    {
+		Flags.dnd = !Flags.dnd
+	        return
+	    }
+
+            if (!mainView.enabled) return;
+            
+            const itemCount = (root.Notifs && root.Notifs.count > 0) ? 3 : 2;
+            
+            if (event.key === Qt.Key_Down || event.text === "j") {
+                root.keyboardFocusIndex = (root.keyboardFocusIndex + 1) % itemCount;
+                event.accepted = true;
+            }
+            else if (event.key === Qt.Key_Up || event.text === "k") {
+                root.keyboardFocusIndex = (root.keyboardFocusIndex - 1 + itemCount) % itemCount;
+                event.accepted = true;
+            }
+            else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.text === "l") {
+                if (root.keyboardFocusIndex === 0) {
+                    root.subview = "wifi";
+                } else if (root.keyboardFocusIndex === 1) {
+                    root.subview = "bt";
+                }
+                event.accepted = true;
+            }
+            else if (event.text === "h") {
+                root.subview = "main";
+                event.accepted = true;
+            }
+        }
+
+        Component.onCompleted: {
+            mainView.forceActiveFocus();
+        }
+
+        onEnabledChanged: {
+            if (enabled) {
+                mainView.forceActiveFocus();
+            }
+        }
+
         Column {
             id: mainCol
             anchors.top: parent.top
@@ -430,7 +510,7 @@ PillSurface {
                 width: parent.width
                 height: 44 * root.s
                 radius: 10 * root.s
-                color: netzHover.hovered ? Theme.frameBg : "transparent"
+                color: (netzHover.hovered || root.keyboardFocusIndex === 0) ? Theme.frameBg : "transparent"
 
                 HoverHandler {
                     id: netzHover
@@ -525,7 +605,7 @@ PillSurface {
                 width: parent.width
                 height: 44 * root.s
                 radius: 10 * root.s
-                color: btHover.hovered ? Theme.frameBg : "transparent"
+                color: (btHover.hovered || root.keyboardFocusIndex === 1) ? Theme.frameBg : "transparent"
 
                 HoverHandler {
                     id: btHover
@@ -645,6 +725,13 @@ PillSurface {
                         font.weight: Font.Bold
                         font.letterSpacing: 1.8 * root.s
                     }
+
+
+		    IconChip {
+		        glyph: Flags.dnd ? "inbox-off" : "inbox"
+		        on: Flags.dnd
+		        onToggled: Flags.dnd = !Flags.dnd
+		    }
                 }
 
                 Row {

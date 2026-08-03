@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Widgets
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Power surface: a row of hand-drawn session glyphs split by a hairline into a

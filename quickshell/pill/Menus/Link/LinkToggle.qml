@@ -1,5 +1,7 @@
 import QtQuick
-import "Singletons"
+import qs
+import qs.Singletons
+import qs.Components.shared.Icons
 
 /**
  * Toggle switch: tile bg off, terracotta fill on, cream knob slides on the

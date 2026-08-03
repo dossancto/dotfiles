@@ -9,9 +9,9 @@ Singleton {
     readonly property color cream:    "#e6d6cb"
     readonly property color bright:   "#fff6f0"
     readonly property color dim:      "#8a7d74"
-    readonly property color cardTop:  "#2e231b"
+    readonly property color cardTop:  "#0a0a0a"
     readonly property color cardBot:  "#221813"
-    readonly property color border:   "#3a2a22"
+    readonly property color border:   "#000000"
     readonly property color shadow:     Qt.rgba(0, 0, 0, 0.55)
     readonly property color tileBg:   "#211711"
     readonly property color subtle:   "#b9a99e"

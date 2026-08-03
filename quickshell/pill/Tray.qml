@@ -7,6 +7,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.SystemTray
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * System tray. Draws StatusNotifier items as warm-tinted icons. Left-click

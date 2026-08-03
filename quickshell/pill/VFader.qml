@@ -1,5 +1,6 @@
 import QtQuick
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Vertical filament fader. A thin matte thread with a rising fill and a flat

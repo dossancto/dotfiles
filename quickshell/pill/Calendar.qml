@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Calendar surface content: header with month/year label and prev/next nav,

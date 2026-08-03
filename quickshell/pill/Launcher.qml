@@ -46,6 +46,10 @@ PillSurface {
     ameForm: "caret"
     amePoint: Qt.point(caretX, caretY)
 
+    Behavior on opacity {
+        NumberAnimation { duration: Motion.fast; easing.type: Motion.easeStandard }
+    }
+
     readonly property string usageFile: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state")) + "/ricelin/launcher-usage.json"
 
     readonly property var allEntries: {

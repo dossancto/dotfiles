@@ -3,7 +3,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Io
 import Quickshell.Bluetooth
-import "Singletons"
+import qs
+import qs.Singletons
+import qs.Components.shared.Icons
 
 /**
  * Bluetooth drill-in for the link surface: back chevron, scan with 25s
@@ -17,6 +19,8 @@ Item {
 
     property real s: 1
     property bool active: false
+    property int keyboardFocusIndex: -1
+    focus: active
 
     signal back()
 
@@ -98,10 +102,53 @@ Item {
     }
 
     onActiveChanged: {
-        if (!active) {
+        if (active) {
+            root.forceActiveFocus();
+        } else {
             scanTimer.stop();
             if (adapter && adapter.discovering)
                 adapter.discovering = false;
+        }
+    }
+
+    Keys.onPressed: (event) => {
+        if (!root.active) return;
+        
+        if (event.text === "h") {
+            root.back();
+            event.accepted = true;
+        }
+
+        else if (event.key === Qt.Key_Down || event.text === "j") {
+            if (root.devicesSorted.length > 0) {
+                root.keyboardFocusIndex = (root.keyboardFocusIndex + 1) % root.devicesSorted.length;
+            }
+            event.accepted = true;
+        }
+        
+        else if (event.key === Qt.Key_Up || event.text === "k") {
+            if (root.devicesSorted.length > 0) {
+                root.keyboardFocusIndex = (root.keyboardFocusIndex - 1 + root.devicesSorted.length) % root.devicesSorted.length;
+            }
+            event.accepted = true;
+        }
+       
+        else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.text === "l") {
+            if (root.keyboardFocusIndex >= 0 && root.keyboardFocusIndex < root.devicesSorted.length) {
+                root.activateDevice(root.devicesSorted[root.keyboardFocusIndex]);
+            }
+            event.accepted = true;
+        }
+        
+        else if (event.text === "s") {
+            if (root.adapter) {
+                root.adapter.discovering = !root.adapter.discovering;
+                if (root.adapter.discovering)
+                    scanTimer.restart();
+                else
+                    scanTimer.stop();
+            }
+            event.accepted = true;
         }
     }
 
@@ -267,12 +314,14 @@ Item {
                     Column {
                         id: devItem
                         required property var modelData
+                        required property int index
                         readonly property bool isConnected: modelData ? modelData.connected === true : false
                         readonly property bool isPaired: modelData ? modelData.paired === true : false
                         readonly property string addr: (modelData && modelData.address) ? modelData.address : ""
                         readonly property bool pairing: addr.length > 0 && root.pairingAddress === addr
                         readonly property bool failed: addr.length > 0 && root.failedAddress === addr
                         readonly property int battery: root.batteryLevel(modelData)
+                        readonly property bool keyboardFocused: root.keyboardFocusIndex === index
                         width: devCol.width
                         spacing: 2 * root.s
 
@@ -280,7 +329,7 @@ Item {
                             width: parent.width
                             height: 38 * root.s
                             radius: 9 * root.s
-                            color: rowHover.hovered ? Theme.frameBg : "transparent"
+                            color: rowHover.hovered || devItem.keyboardFocused ? Theme.frameBg : "transparent"
 
                             HoverHandler { id: rowHover }
 

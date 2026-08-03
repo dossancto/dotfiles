@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Mixer surface: header with DND / Keep-Awake chips and a row of four vertical

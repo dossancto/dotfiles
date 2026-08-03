@@ -4,7 +4,9 @@ import QtQuick
 import QtQuick.Controls
 import Quickshell.Io
 import Quickshell.Networking
-import "Singletons"
+import qs
+import qs.Singletons
+import qs.Components.shared.Icons
 
 /**
  * WLAN drill-in for the link surface: back chevron, wifi enable toggle and the
@@ -18,6 +20,8 @@ Item {
 
     property real s: 1
     property bool active: false
+    property int keyboardFocusIndex: -1
+    focus: active
 
     signal back()
 
@@ -146,6 +150,7 @@ Item {
         if (active) {
             refresh();
             refreshHotspot();
+            root.forceActiveFocus();
         } else {
             stopScan();
             expandedSsid = "";
@@ -155,6 +160,37 @@ Item {
     }
 
     onWifiOnChanged: if (!wifiOn) stopScan()
+
+    Keys.onPressed: (event) => {
+        if (!root.active) return;
+        
+        
+        if (event.text === "h") {
+            root.back();
+            event.accepted = true;
+        }
+        
+        else if (event.key === Qt.Key_Down || event.text === "j") {
+            if (root.netsSorted.length > 0) {
+                root.keyboardFocusIndex = (root.keyboardFocusIndex + 1) % root.netsSorted.length;
+            }
+            event.accepted = true;
+        }
+        
+        else if (event.key === Qt.Key_Up || event.text === "k") {
+            if (root.netsSorted.length > 0) {
+                root.keyboardFocusIndex = (root.keyboardFocusIndex - 1 + root.netsSorted.length) % root.netsSorted.length;
+            }
+            event.accepted = true;
+        }
+        
+        else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.text === "l") {
+            if (root.keyboardFocusIndex >= 0 && root.keyboardFocusIndex < root.netsSorted.length) {
+                root.activateNetwork(root.netsSorted[root.keyboardFocusIndex]);
+            }
+            event.accepted = true;
+        }
+    }
 
     Binding {
         target: root.wifiDev
@@ -499,10 +535,12 @@ Item {
                     Column {
                         id: netItem
                         required property var modelData
+                        required property int index
                         readonly property string ssid: (modelData && modelData.name) ? modelData.name : ""
                         readonly property bool isActive: modelData ? modelData.connected === true : false
                         readonly property bool secured: root.isSecured(ssid)
                         readonly property bool expanded: ssid.length > 0 && root.expandedSsid === ssid
+                        readonly property bool keyboardFocused: root.keyboardFocusIndex === index
                         width: netCol.width
                         spacing: 2 * root.s
 
@@ -520,7 +558,7 @@ Item {
                             height: 30 * root.s
                             radius: 9 * root.s
                             color: netItem.isActive ? Qt.rgba(Theme.verm.r, Theme.verm.g, Theme.verm.b, 0.14)
-                                : (rowHover.hovered ? Theme.frameBg : "transparent")
+                                : (rowHover.hovered || netItem.keyboardFocused ? Theme.frameBg : "transparent")
 
                             HoverHandler { id: rowHover }
 

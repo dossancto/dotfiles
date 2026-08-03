@@ -108,6 +108,15 @@ ShellRoot {
         root.peekMon = root.peekMon === mon ? "" : mon;
     }
 
+    function dismiss() {
+        root.close();
+        root.peekMon = "";
+        var popupsCopy = Notifs.popups.slice();
+        for (var i = 0; i < popupsCopy.length; i++) {
+            Notifs.removePopup(popupsCopy[i]);
+        }
+    }
+
     IpcHandler {
         target: "pill"
         function mixer(mon: string): void { root.toggleSurface(mon, "mixer"); }
@@ -124,6 +133,7 @@ ShellRoot {
         }
         function peek(mon: string): void { root.peek(mon); }
         function hide(): void { root.close(); }
+        function dismiss(): void { root.dismiss(); }
     }
 
     Variants {
@@ -201,7 +211,7 @@ ShellRoot {
             Region {
                 id: pillRegion
                 readonly property real baseW: Math.max(pill.width, pill.targetW)
-                x: pill.x + (pill.width - baseW) / 2
+                x: pill.x
                 y: pill.y
                 width: baseW + pill.inputPadRight
                 height: Math.max(pill.height, pill.targetH)
@@ -252,7 +262,8 @@ ShellRoot {
                     id: pill
                     anchors.top: parent.top
                     anchors.topMargin: overlay.topGap
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 12 * overlay.s
                     s: overlay.s
                     screenName: overlay.modelData.name
                     barWindow: overlay

@@ -7,6 +7,9 @@ import Quickshell
 import Quickshell.Services.Mpris
 import Quickshell.Networking
 import "Singletons"
+import "services"
+import "Menus/Link"
+import "Components/shared/Icons"
 
 /**
  * The pill body. One element carries every state. Width/height driven by `state`
@@ -294,7 +297,6 @@ Item {
         border.color: Theme.border
         gradient: Gradient {
             GradientStop { position: 0.0; color: Theme.cardTop }
-            GradientStop { position: 1.0; color: Theme.cardBot }
         }
 
         layer.enabled: true
@@ -317,15 +319,6 @@ Item {
         }
     }
 
-    /**
-     * Rest anchor for Ame: the 時 kanji centre. The idle outline condenses into
-     * the bead here before it moves.
-     */
-    readonly property point wakePoint: {
-        void pill.width;
-        void pill.height;
-        return restKanji.mapToItem(pill, restKanji.width / 2, restKanji.height / 2);
-    }
 
     /**
      * Bead target while hovered. soulTarget is a sticky key written by the hover
@@ -370,21 +363,6 @@ Item {
         : (powerOpen ? power
         : (linkOpen ? link
         : (batteryOpen ? battery : null)))))))
-
-    Ame {
-        id: ame
-        anchors.fill: parent
-        s: pill.s
-        heat: pill.powerOpen ? power.holdProgress : 0
-        wake: pill.wakePoint
-        wickDir: pill.powerOpen ? 1 : -1
-        form: pill.ameSurface ? pill.ameSurface.ameForm
-            : (pill.mode === "hover" && pill.hoverSoulGate ? "soul" : "off")
-        point: pill.ameSurface
-            ? Qt.point(pill.ameSurface.x + pill.ameSurface.amePoint.x,
-                       pill.ameSurface.y + pill.ameSurface.amePoint.y)
-            : (pill.mode === "hover" ? pill.soulPoint : pill.wakePoint)
-    }
 
     /**
      * Extra input width past the pill's right edge while the media bud sticks
@@ -434,40 +412,45 @@ Item {
             id: restRow
             anchors.centerIn: parent
             spacing: 9 * pill.s
-            Item {
-                id: restKanji
-                anchors.verticalCenter: parent.verticalCenter
-                width: kanjiFill.implicitWidth
-                height: kanjiFill.implicitHeight
 
-                Text {
-                    anchors.fill: parent
-                    text: kanjiFill.text
-                    color: "transparent"
-                    font: kanjiFill.font
-                    style: Text.Outline
-                    styleColor: Qt.alpha(Theme.vermLit,
-                        Math.min(1, (pill.mode === "rest" || !pill.hoverSoulGate ? 0.5 : 0) + pill.kanjiFlash))
-                }
-
-                Text {
-                    id: kanjiFill
-                    text: "時"
-                    color: Theme.cream
-                    font.family: Theme.fontJp
-                    font.weight: Font.Medium
-                    font.pixelSize: 15 * pill.s
-                }
-            }
             Text {
                 anchors.verticalCenter: parent.verticalCenter
-                text: clock.hhmm
+                text: HyprlandXkb.currentLayoutCode ?? "123"
                 color: Theme.cream
                 font.family: Theme.font
-                font.pixelSize: 16 * pill.s
+                font.pixelSize: 12 * pill.s
                 font.weight: Font.DemiBold
                 font.features: { "tnum": 1 }
             }
+
+	    Item {
+	        id: mic_a
+	        anchors.verticalCenter: parent.verticalCenter
+	        width: 17 * pill.s
+	        height: 17 * pill.s
+
+	        GlyphIcon {
+		    anchors.fill: parent
+		    name:  Audio.source?.audio?.muted ? "mic-off" : "mic"
+		    color: Theme.iconDim
+		    stroke: 1.7
+	        }
+	    }
+
+	    Item {
+	        id: dndIcon_closed
+	        visible: Flags.dnd
+	        anchors.verticalCenter: parent.verticalCenter
+	        width: 17 * pill.s
+	        height: 17 * pill.s
+
+	        GlyphIcon {
+		    anchors.fill: parent
+		    name:  "inbox-off"
+		    color: Theme.vermLit
+		    stroke: 1.7
+	        }
+	    }
         }
     }
 
@@ -583,46 +566,21 @@ Item {
                     enabled: hover.live
                 }
 
-                Shape {
-                    id: dndIcon
-                    anchors.verticalCenter: parent.verticalCenter
-                    visible: Flags.dnd
-                    width: 16 * pill.s
-                    height: 16 * pill.s
-                    preferredRendererType: Shape.CurveRenderer
 
-                    ShapePath {
-                        strokeColor: Theme.vermLit
-                        strokeWidth: 1.5 * pill.s
-                        fillColor: "transparent"
-                        capStyle: ShapePath.RoundCap
-                        joinStyle: ShapePath.RoundJoin
-                        startX: 5.2 * pill.s; startY: 12.2 * pill.s
-                        PathLine { x: 12.2 * pill.s; y: 12.2 * pill.s }
-                        PathLine { x: 12.2 * pill.s; y: 7.2 * pill.s }
-                        PathCubic {
-                            control1X: 12.2 * pill.s; control1Y: 5.4 * pill.s
-                            control2X: 11.2 * pill.s; control2Y: 4.0 * pill.s
-                            x: 9.5 * pill.s; y: 3.5 * pill.s
-                        }
-                    }
-                    ShapePath {
-                        strokeColor: Theme.vermLit
-                        strokeWidth: 1.5 * pill.s
-                        fillColor: "transparent"
-                        capStyle: ShapePath.RoundCap
-                        startX: 6.8 * pill.s; startY: 13.6 * pill.s
-                        PathLine { x: 9.2 * pill.s; y: 13.6 * pill.s }
-                    }
-                    ShapePath {
-                        strokeColor: Theme.vermLit
-                        strokeWidth: 1.6 * pill.s
-                        fillColor: "transparent"
-                        capStyle: ShapePath.RoundCap
-                        startX: 3.2 * pill.s; startY: 2.8 * pill.s
-                        PathLine { x: 13.0 * pill.s; y: 13.4 * pill.s }
-                    }
-                }
+	        Item {
+	            id: dndIcon_open
+	            visible: Flags.dnd
+	            anchors.verticalCenter: parent.verticalCenter
+	            width: 17 * pill.s
+	            height: 17 * pill.s
+
+	            GlyphIcon {
+		        anchors.fill: parent
+		        name:  "inbox-off"
+		        color: Theme.vermLit
+		        stroke: 1.7
+	            }
+	        }
 
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
