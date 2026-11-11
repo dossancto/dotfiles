@@ -10,6 +10,9 @@ settings:
     global: false
   content.desktop_capture:
     https://huly.app: true
+  content.headers.user_agent:
+    https://accounts.google.com/*: Mozilla/5.0 ({os_info}; rv:135.0) Gecko/20100101
+      Firefox/135
   content.javascript.clipboard:
     http://localhost:5069: access-paste
     https://aylur.github.io: access-paste

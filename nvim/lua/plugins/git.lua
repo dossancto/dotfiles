@@ -45,6 +45,11 @@ return {
 				desc = "List GitHub Discussions",
 			},
 			{
+				"<leader>oa",
+				"<CMD>Octo comment add<CR>",
+				desc = "List GitHub Discussions",
+			},
+			{
 				"<leader>on",
 				"<CMD>Octo notification list<CR>",
 				desc = "List GitHub Notifications",

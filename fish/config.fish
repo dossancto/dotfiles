@@ -21,6 +21,22 @@ function fish_prompt
      printf '%s' (basename $PWD) (fish_git_prompt) ' $ ' (set_color normal)
 end
 
+function view_buffer_in_fx
+    set tempfile (mktemp)
+    
+    commandline -b > $tempfile
+    
+    fx $tempfile
+    
+    rm -f $tempfile
+    
+    commandline -f repaint
+end
+
+function fish_user_key_bindings
+    bind \ef view_buffer_in_fx
+end
+
 source ~/.config/fish/alias.fish
 
 
@@ -46,6 +62,10 @@ set -x WINEPREFIX "/mnt/nvme0n1p5/projects/wineprefix"
 set -gx EDITOR nvim
 set -gx POSTING_PAGER fx
 set -gx PATH /home/dossancto/.dotnet/tools $PATH
+
+set -gx DOTNET_ROOT $HOME/.dotnet
+set -gx DOTNET_HOST_PATH $HOME/.dotnet/dotnet
+fish_add_path $HOME/.dotnet $HOME/.dotnet/tools
 
 # Generated for envman. Do not edit.
 test -s ~/.config/envman/load.fish; and source ~/.config/envman/load.fish

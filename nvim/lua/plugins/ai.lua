@@ -4,7 +4,7 @@ return {
 		dependencies = {
 			-- 'nvim-lua/plenary.nvim',
 			'nvim-treesitter/nvim-treesitter',
-			-- 'github/copilot.vim',
+			'github/copilot.vim',
 			-- 'kkrampis/codex.nvim',
 		},
 		opts = {
@@ -30,6 +30,17 @@ return {
 					},
 				},
 			},
+		},
+		adapters = {
+			copilot = function()
+				return require("codecompanion.adapters").extend("copilot", {
+					schema = {
+						model = {
+							default = "gpt-5.6-luna", -- Define o modelo padrão para o Copilot
+						},
+					},
+				})
+			end,
 		},
 	},
 	{
