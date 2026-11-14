@@ -20,7 +20,6 @@ const newTabMacros: Record<string, string> = {
         gh: 'https://github.com/search?o=desc&q={searchTerm}&s=stars',
 
 };
-const defaultSearchUrl = "https://duckduckgo.com/?q={searchTerm}";
 
 function expandNewTabInput(input: string): string | undefined {
 	const match = input.trim().match(/^!(\S+)(?:\s+([\s\S]*))?$/);
@@ -54,9 +53,10 @@ async function openTab(input: string, disposition: "CURRENT_TAB" | "NEW_TAB"): P
 		return;
 	}
 
-	const searchUrl = defaultSearchUrl.replace("{searchTerm}", encodeURIComponent(value));
-	if (disposition === "NEW_TAB") await browser.tabs.create({ url: searchUrl });
-	else await browser.tabs.update((await glide.tabs.active()).id, { url: searchUrl });
+	await browser.search.query({
+		text: value,
+		disposition,
+	});
 }
 
 function showOpenCommandline(disposition: "CURRENT_TAB" | "NEW_TAB", input = ""): void {
