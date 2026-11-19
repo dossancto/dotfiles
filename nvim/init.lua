@@ -2,7 +2,6 @@ vim.g.mapleader = " "
 vim.cmd("language en_US.utf8")
 
 require("init.lazy_pre").check_load_lazy()
-vim.cmd.colorscheme("gruvbox-material")
 require("init.lsp")
 require("configuration.post_options")
 
@@ -10,3 +9,5 @@ vim.cmd('set guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"')
 
 require("configuration.options")
 require("configuration.keybinds.init")
+
+vim.cmd.colorscheme("catppuccin")

@@ -16,7 +16,12 @@ hl.bind("SUPER + N", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill link $(hyp
 hl.bind("SUPER + M", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill mixer $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle Link surface" })
 hl.bind("SUPER + O", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill peek $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth menu" })
 hl.bind("SUPER + C", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill dismiss"), { description = "Pill: Open Bluetooth menu" })
-hl.bind("SUPER + SUPER_L", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill launcher $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth menu" })
+
+local launcher_cmd = "qs -c pill ipc call"  .. " pill launcher $(hyprctl activeworkspace -j | jq -r '.monitor')"
+
+hl.bind("SUPER + SUPER_L", hl.dsp.exec_cmd(launcher_cmd), { release = true, description = "Pill: Open App Launcher menu" })
+hl.bind("SUPER + SUPER_R", hl.dsp.exec_cmd(launcher_cmd), { release = true, description = "Pill: Open Launcher menu" })
+
 hl.bind("SUPER + V", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill clipboard $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth menu" })
 hl.bind("SUPER + P", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill power $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth menu" })
 hl.bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill power $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth menu" })

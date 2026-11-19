@@ -40,8 +40,6 @@ end
 source ~/.config/fish/alias.fish
 
 
-zoxide init fish | source
-
 # ASDF configuration code
 if test -z $ASDF_DATA_DIR
     set _asdf_shims "$HOME/.asdf/shims"
@@ -67,7 +65,12 @@ set -gx DOTNET_ROOT $HOME/.dotnet
 set -gx DOTNET_HOST_PATH $HOME/.dotnet/dotnet
 fish_add_path $HOME/.dotnet $HOME/.dotnet/tools
 
+zoxide init fish | source
+
 # Generated for envman. Do not edit.
 test -s ~/.config/envman/load.fish; and source ~/.config/envman/load.fish
 
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin /home/dossancto/.ghcup/bin $PATH # ghcup-env
+
+# opencode
+fish_add_path /home/dossancto/.opencode/bin
