@@ -1,8 +1,11 @@
 return {
-	{
-		'custom-gruvbox-material',
-		dir = '~/.dotfiles/nvim/plugins/gruvbox-material'
-	},
+{
+  'f4z3r/gruvbox-material.nvim',
+  name = 'gruvbox-material',
+  lazy = false,
+  priority = 1000,
+  opts = {},
+},
 	-- { 'alexvzyl/nordic.nvim' },
 	-- { "vimcolorschemes/olive-crt.nvim" },
 	-- {

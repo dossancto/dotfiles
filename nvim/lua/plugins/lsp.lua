@@ -86,16 +86,16 @@ return {
 			{ 'rafamadriz/friendly-snippets' },
 		},
 	},
-	{
-		'L3MON4D3/LuaSnip',
-		event = 'VeryLazy',
-		version = 'v2.*', -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-		build = 'make install_jsregexp',
-		config = function()
-			require('luasnip.loaders.from_vscode').lazy_load()
-		end,
-		dependencies = { 'rafamadriz/friendly-snippets' },
-	},
+	-- {
+	-- 	'L3MON4D3/LuaSnip',
+	-- 	event = 'VeryLazy',
+	-- 	version = 'v2.*', -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+	-- 	build = 'make install_jsregexp',
+	-- 	config = function()
+	-- 		require('luasnip.loaders.from_vscode').lazy_load()
+	-- 	end,
+	-- 	dependencies = { 'rafamadriz/friendly-snippets' },
+	-- },
 	{
 		'folke/todo-comments.nvim',
 		cmd = { 'TodoTrouble' },
@@ -103,24 +103,24 @@ return {
 		opts = {},
 		dependencies = { 'nvim-lua/plenary.nvim' },
 	},
-	{
-		'hat0uma/csvview.nvim',
-		cmd = { 'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle' },
-		opts = {
-			parser = { comments = { '#', '//' } },
-			keymaps = {
-				-- Text objects for selecting fields
-				textobject_field_inner = { 'if', mode = { 'o', 'x' } },
-				textobject_field_outer = { 'af', mode = { 'o', 'x' } },
-				-- Excel-like navigation: move with tab and enter
-				-- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
-				jump_next_field_end = { '<Tab>', mode = { 'n', 'v' } },
-				jump_prev_field_end = { '<S-Tab>', mode = { 'n', 'v' } },
-				jump_next_row = { '<Enter>', mode = { 'n', 'v' } },
-				jump_prev_row = { '<S-Enter>', mode = { 'n', 'v' } },
-			},
-		},
-	},
+	-- {
+	-- 	'hat0uma/csvview.nvim',
+	-- 	cmd = { 'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle' },
+	-- 	opts = {
+	-- 		parser = { comments = { '#', '//' } },
+	-- 		keymaps = {
+	-- 			-- Text objects for selecting fields
+	-- 			textobject_field_inner = { 'if', mode = { 'o', 'x' } },
+	-- 			textobject_field_outer = { 'af', mode = { 'o', 'x' } },
+	-- 			-- Excel-like navigation: move with tab and enter
+	-- 			-- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
+	-- 			jump_next_field_end = { '<Tab>', mode = { 'n', 'v' } },
+	-- 			jump_prev_field_end = { '<S-Tab>', mode = { 'n', 'v' } },
+	-- 			jump_next_row = { '<Enter>', mode = { 'n', 'v' } },
+	-- 			jump_prev_row = { '<S-Enter>', mode = { 'n', 'v' } },
+	-- 		},
+	-- 	},
+	-- },
 
 
 	-- lspconfig
@@ -301,18 +301,18 @@ return {
 			})
 		end,
 	},
-	{
-		"eero-lehtinen/oklch-color-picker.nvim",
-		event = "VeryLazy",
-		version = "*",
-		keys = {
-			{
-				"<leader>v",
-				function() require("oklch-color-picker").pick_under_cursor() end,
-				desc = "Color pick under cursor",
-			},
-		},
-		---@type oklch.Opts
-		opts = {},
-	}
+	-- {
+	-- 	"eero-lehtinen/oklch-color-picker.nvim",
+	-- 	event = "VeryLazy",
+	-- 	version = "*",
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>v",
+	-- 			function() require("oklch-color-picker").pick_under_cursor() end,
+	-- 			desc = "Color pick under cursor",
+	-- 		},
+	-- 	},
+	-- 	---@type oklch.Opts
+	-- 	opts = {},
+	-- }
 }

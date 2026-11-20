@@ -6,25 +6,36 @@ return {
 		---@type snacks.Config
 		opts = {
 			bigfile = { enabled = true },
-			dashboard = { enabled = false },
-			explorer = { enabled = false },
-			indent = { enabled = false },
-			input = { enabled = true },
-			notifier = {
-				enabled = true,
-				timeout = 3000,
-			},
 			picker = { enabled = true },
 			quickfile = { enabled = true },
-			scope = { enabled = true },
-			scroll = { enabled = true },
-			statuscolumn = { enabled = true },
-			words = { enabled = false },
-			styles = {
-				notification = {
-					-- wo = { wrap = true } -- Wrap notifications
-				}
-			}
+			    notifier = { enabled = true },
+			    notify = { enabled = true },
+
+			 animate = { enabled = false },
+			    bufdelete = { enabled = false },
+			    dashboard = { enabled = false },
+			    debug = { enabled = false },
+			    dim = { enabled = false },
+			    explorer = { enabled = false },
+			    gh = { enabled = false },
+			    git = { enabled = false },
+			    gitbrowse = { enabled = false },
+			    image = { enabled = false },
+			    indent = { enabled = false },
+			    input = { enabled = false },
+			    keymap = { enabled = false },
+			    layout = { enabled = false },
+			    lazygit = { enabled = false },
+			    profiler = { enabled = false },
+			    -- rename = { enabled = false },
+			    scope = { enabled = false },
+			    scratch = { enabled = false },
+			    scroll = { enabled = false },
+			    statuscolumn = { enabled = false },
+			    terminal = { enabled = false },
+			    toggle = { enabled = false },
+			    words = { enabled = false },
+			    zen = { enabled = false }
 		},
 		keys = {
 			-- Top Pickers & Explorer
@@ -183,21 +194,25 @@ return {
 	-- 	dependencies = { 'nvim-tree/nvim-web-devicons' }
 	-- },
 	-- lazy.nvim
-	{
-		"folke/noice.nvim",
-		event = "VeryLazy",
-		opts = {
-			-- add any options here
-		},
-		dependencies = {
-			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-			"MunifTanjim/nui.nvim",
-			-- OPTIONAL:
-			--   `nvim-notify` is only needed, if you want to use the notification view.
-			--   If not available, we use `mini` as the fallback
-			"rcarriga/nvim-notify",
-		}
-	},
+	-- {
+	-- 	"folke/noice.nvim",
+	-- 	event = "VeryLazy",
+	-- 	opts = {
+	-- 		cmdline = {
+	-- 			enabled = true,
+	-- 		    view = "cmdline",
+	--
+	-- 		}
+	-- 	},
+	-- 	dependencies = {
+	-- 		-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+	-- 		"MunifTanjim/nui.nvim",
+	-- 		-- OPTIONAL:
+	-- 		--   `nvim-notify` is only needed, if you want to use the notification view.
+	-- 		--   If not available, we use `mini` as the fallback
+	-- 		"rcarriga/nvim-notify",
+	-- 	}
+	-- },
 	{
 		'folke/which-key.nvim',
 		event = 'VeryLazy',
@@ -206,15 +221,15 @@ return {
 		},
 	},
 
-	{
-		'cappyzawa/trim.nvim',
-		cmd = 'Trim',
-		keys = { { '<C-1>', ':Trim<cr>', desc = 'Trim Space' } },
-		opts = {
-			trim_on_write = false,
-			trim_first_line = false,
-		},
-	},
+	-- {
+	-- 	'cappyzawa/trim.nvim',
+	-- 	cmd = 'Trim',
+	-- 	keys = { { '<C-1>', ':Trim<cr>', desc = 'Trim Space' } },
+	-- 	opts = {
+	-- 		trim_on_write = false,
+	-- 		trim_first_line = false,
+	-- 	},
+	-- },
 	{
 		'LunarVim/bigfile.nvim',
 		opts = {
