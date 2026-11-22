@@ -11,10 +11,10 @@ import qs.Singletons
 import qs.Components.shared.Icons
 
 /**
- * 繋 LINK surface: connectivity rows (auto-detected Netz, Bluetooth) over the
- * 報 INBOX notification center, with WLAN and Bluetooth drill-in subviews that
+ * LINK surface: connectivity rows (auto-detected network, Bluetooth) over the
+ * INBOX notification center, with WLAN and Bluetooth drill-in subviews that
  * cross-fade in place. Owns the `subview` state machine and exposes
- * `desiredW`, `emberX`/`emberY` (flame dock point beside the 報 marker) and
+ * `desiredW`, `emberX`/`emberY` (flame dock point beside the inbox marker) and
  * `back()` for the pill's morph and Escape plumbing. Opening marks all
  * notifications seen after a short beat so unread embers register first.
  */
@@ -439,13 +439,13 @@ PillSurface {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 8 * root.s
 
-                    Text {
+                    GlyphIcon {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "繋"
+                        width: 16 * root.s
+                        height: 16 * root.s
+                        name: "link"
                         color: Theme.cream
-                        font.family: Theme.fontJp
-                        font.weight: Font.Medium
-                        font.pixelSize: 16 * root.s
+                        stroke: 1.8
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
@@ -721,14 +721,14 @@ PillSurface {
                         height: 10 * root.s
                     }
 
-                    Text {
+                    GlyphIcon {
                         id: inboxKanji
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "報"
+                        width: 12 * root.s
+                        height: 12 * root.s
+                        name: "inbox"
                         color: Theme.dim
-                        font.family: Theme.fontJp
-                        font.weight: Font.Medium
-                        font.pixelSize: 11.5 * root.s
+                        stroke: 1.8
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
@@ -755,13 +755,13 @@ PillSurface {
                     visible: Notifs.count > 0
                     spacing: 4 * root.s
 
-                    Text {
+                    GlyphIcon {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: "払"
+                        width: 10 * root.s
+                        height: 10 * root.s
+                        name: "trash"
                         color: clearArea.containsMouse ? Theme.vermLit : Theme.vermDim
-                        font.family: Theme.fontJp
-                        font.pixelSize: 9 * root.s
-                        font.weight: Font.Bold
+                        stroke: 1.7
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
@@ -987,14 +987,14 @@ PillSurface {
                 bottomPadding: 14 * root.s
                 spacing: 4 * root.s
 
-                Text {
+                GlyphIcon {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "静"
+                    width: 32 * root.s
+                    height: 32 * root.s
+                    name: "inbox"
                     color: Theme.ghost
                     opacity: 0.55
-                    font.family: Theme.fontJp
-                    font.weight: Font.Medium
-                    font.pixelSize: 32 * root.s
+                    stroke: 1.8
                 }
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter

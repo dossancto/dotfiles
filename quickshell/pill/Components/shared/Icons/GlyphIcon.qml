@@ -51,7 +51,16 @@ Item {
         "bluetooth": { d: "M12 2.8v18.4 M12 2.8l5.2 4.6-10.4 9 M12 21.2l5.2-4.6-10.4-9", fill: false },
         "inbox": { d: "M6 16v-5a6 6 0 0 1 12 0v5 M4 16h16 M10.5 20a1.8 1.8 0 0 0 3 0", fill: false },
         "inbox-off": { d: "M6 16v-5a6 6 0 0 1 12 0v5 M4 16h16 M10.5 20a1.8 1.8 0 0 0 3 0 M3 3l18 18", fill: false },
-        "hotspot": { d: "M12 12a1.3 1.3 0 1 0 0.01 0 M8.8 8.5A5 5 0 0 0 8.8 15.5 M15.2 8.5A5 5 0 0 1 15.2 15.5 M6 6A9 9 0 0 0 6 18 M18 6A9 9 0 0 1 18 18", fill: false }
+        "hotspot": { d: "M12 12a1.3 1.3 0 1 0 0.01 0 M8.8 8.5A5 5 0 0 0 8.8 15.5 M15.2 8.5A5 5 0 0 1 15.2 15.5 M6 6A9 9 0 0 0 6 18 M18 6A9 9 0 0 1 18 18", fill: false },
+        "search": { d: "M10.5 4a6.5 6.5 0 1 0 0 13a6.5 6.5 0 1 0 0-13z M15.2 15.2l5 5", fill: false },
+        "calendar": { d: "M4 5.5h16v14H4z M4 9h16 M8 3v5 M16 3v5 M8 12h2 M14 12h2 M8 16h2 M14 16h2", fill: false },
+        "battery": { d: "M3 7h16v10H3z M19 10h2v4h-2 M6 10v4 M9 10v4 M12 10v4 M15 10v4", fill: false },
+        "trash": { d: "M5 7h14 M9 7V4h6v3 M7 7l1 13h8l1-13 M10 10v7 M14 10v7", fill: false },
+        "clipboard": { d: "M8 5h8v3H8z M6 6H4v15h16V6h-2 M9 12h6 M9 16h6", fill: false },
+        "wallpaper": { d: "M3 4h18v16H3z M6 17l4-5l3 3l2-2l4 4 M8 8a2 2 0 1 0 0.01 0", fill: false },
+        "link": { d: "M9 12h6 M10 8l-3 0a4 4 0 1 0 0 8h3 M14 8h3a4 4 0 1 1 0 8h-3", fill: false },
+        "bell-off": { d: "M6 16V11a6 6 0 0 1 9.3-5 M18 11v5 M4 16h16 M10.5 20a1.8 1.8 0 0 0 3 0 M3 3l18 18", fill: false },
+        "image": { d: "M3 4h18v16H3z M6 17l4-5l3 3l2-2l4 4 M8 8a2 2 0 1 0 0.01 0", fill: false }
     })
 
     readonly property var g: glyphs[name] !== undefined ? glyphs[name] : ({ d: "", fill: false })

@@ -7,7 +7,7 @@ import "Singletons"
 import "Components/shared/Icons"
 
 /**
- * 蓄 BATTERY surface: a typographic read-out for the laptop battery. The
+ * BATTERY surface: a typographic read-out for the laptop battery. The
  * percentage is the hero, set over a time-to-empty/full subline, with a thin
  * charge meter and an adaptive stat list (Rate / Health / Capacity) beneath a
  * hairline. Health drops when UPower can't report it and the time line drops
@@ -142,13 +142,13 @@ PillSurface {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 8 * root.s
 
-                Text {
+                GlyphIcon {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "蓄"
+                    width: 16 * root.s
+                    height: 16 * root.s
+                    name: "battery"
                     color: Theme.cream
-                    font.family: Theme.fontJp
-                    font.weight: Font.Medium
-                    font.pixelSize: 16 * root.s
+                    stroke: 1.8
                 }
                 Text {
                     anchors.verticalCenter: parent.verticalCenter

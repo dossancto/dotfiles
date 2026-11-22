@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Effects
 import Quickshell.Widgets
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Wallpaper surface: a filmstrip over the wallpaper directory, rendered as one
@@ -96,17 +97,17 @@ PillSurface {
         }
     }
 
-    Text {
+    GlyphIcon {
         anchors.left: parent.left
         anchors.leftMargin: 20 * root.s
         anchors.verticalCenter: parent.verticalCenter
         z: 0
-        text: "壁"
+        width: 30 * root.s
+        height: 30 * root.s
+        name: "wallpaper"
         color: Theme.ghost
         opacity: 0.55
-        font.family: Theme.fontJp
-        font.weight: Font.Medium
-        font.pixelSize: 30 * root.s
+        stroke: 1.8
     }
 
     Repeater {

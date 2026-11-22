@@ -11,7 +11,7 @@ import "Components/shared/Icons"
  * Now-playing card. Album art bleeds edge-to-edge on the left, faded into the
  * card; a blurred copy of the same art glows through a near-opaque warm wash
  * behind everything. Right of the cover: title, artist, a dim service/time
- * line, the play/pause seal (奏/休) flanked by 前/次 skips. Playback runs as a
+ * line, the play/pause control flanked by previous/next controls. Playback runs as a
  * brush stroke along the bottom (dry base stroke + painted progress stroke);
  * the painted head is where the pill's soul bead docks. Reads the active MPRIS
  * player.
@@ -133,19 +133,25 @@ PillSurface {
         onFinished: coverPair.settle()
     }
 
-    component KanjiSkip: Text {
+    component KanjiSkip: Item {
         id: skip
 
         property bool can: false
+        property string iconName: "prev"
         signal activated()
 
+        width: 16 * root.s
+        height: 16 * root.s
         anchors.verticalCenter: parent.verticalCenter
-        font.family: Theme.fontJp
-        font.pixelSize: 13 * root.s
-        color: skipArea.containsMouse ? Theme.cream : Theme.dim
         opacity: skip.can ? 1 : 0.4
-        Behavior on color { ColorAnimation { duration: Motion.fast } }
         Behavior on opacity { NumberAnimation { duration: Motion.fast } }
+
+        GlyphIcon {
+            anchors.fill: parent
+            name: skip.iconName
+            color: skipArea.containsMouse ? Theme.cream : Theme.dim
+            stroke: 1.8
+        }
 
         MouseArea {
             id: skipArea
@@ -343,7 +349,7 @@ PillSurface {
             spacing: 14 * root.s
 
             KanjiSkip {
-                text: "前"
+                iconName: "prev"
                 can: root.hasPlayer && root.player.canGoPrevious
                 onActivated: if (root.player) root.player.previous()
             }
@@ -371,13 +377,13 @@ PillSurface {
                     GradientStop { position: 1.0; color: root.mix(Theme.vermDeep, Theme.tileBg, 0.55 * (1 - seal.sat)) }
                 }
 
-                Text {
+                GlyphIcon {
                     anchors.centerIn: parent
-                    text: root.playing ? "奏" : "休"
+                    width: 16 * root.s
+                    height: 16 * root.s
+                    name: root.playing ? "pause" : "play"
                     color: Theme.bright
-                    font.family: Theme.fontJp
-                    font.pixelSize: 16 * root.s
-                    font.weight: Font.DemiBold
+                    stroke: 1.8
                 }
 
                 MouseArea {
@@ -392,7 +398,7 @@ PillSurface {
             }
 
             KanjiSkip {
-                text: "次"
+                iconName: "next"
                 can: root.hasPlayer && root.player.canGoNext
                 onActivated: if (root.player) root.player.next()
             }

@@ -1,12 +1,13 @@
 import QtQuick
 import QtQuick.Controls
 import "Singletons"
+import "Components/shared/Icons"
 
 Item {
     id: root
 
     property real s: 1
-    property string kanji: ""
+    property string iconName: "search"
     property string placeholder: ""
     property string counterText: ""
     readonly property alias input: field
@@ -20,15 +21,15 @@ Item {
 
     height: 30 * s
 
-    Text {
+    GlyphIcon {
         id: glyph
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        text: root.kanji
+        width: 16 * root.s
+        height: 16 * root.s
+        name: root.iconName
         color: Theme.dim
-        font.family: Theme.fontJp
-        font.weight: Font.Medium
-        font.pixelSize: 16 * root.s
+        stroke: 1.8
     }
 
     TextField {

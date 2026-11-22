@@ -95,13 +95,13 @@ PillSurface {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 8 * root.s
 
-            Text {
+            GlyphIcon {
                 anchors.verticalCenter: parent.verticalCenter
-                text: "暦"
+                width: 16 * root.s
+                height: 16 * root.s
+                name: "calendar"
                 color: Theme.cream
-                font.family: Theme.fontJp
-                font.weight: Font.Medium
-                font.pixelSize: 16 * root.s
+                stroke: 1.8
             }
             Text {
                 anchors.verticalCenter: parent.verticalCenter

@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import "Singletons"
+import "Components/shared/Icons"
 
 /**
  * Clipboard surface: search field over the cliphist history, drawn as one of
@@ -10,7 +11,7 @@ import "Singletons"
  * substring, Return copies the selected entry and closes, hovering a row
  * cross-fades a dismiss glyph that deletes it (Ctrl+X does the same for the
  * keyboard selection). Image entries render their cached thumbnail beside the
- * size label. Holding the 掃 glyph for the heat duration wipes the whole
+ * size label. Holding the trash icon for the heat duration wipes the whole
  * history; progress sweeps along the header divider and drains on early
  * release.
  */
@@ -100,7 +101,7 @@ PillSurface {
         anchors.left: parent.left
         anchors.right: parent.right
         s: root.s
-        kanji: "控"
+        iconName: "clipboard"
         placeholder: "Search clipboard"
         counterText: root.results.length + " / " + Cliphist.count
         onTextChanged: {
@@ -127,12 +128,13 @@ PillSurface {
             readonly property real hold: wipeHeat.hold
             readonly property bool holding: wipeHeat.holding
 
-            Text {
+            GlyphIcon {
                 anchors.centerIn: parent
-                text: "掃"
+                width: 12 * root.s
+                height: 12 * root.s
+                name: "trash"
                 color: wipeBtn.holding ? Theme.vermLit : (wipeArea.containsMouse ? Theme.cream : Theme.faint)
-                font.family: Theme.fontJp
-                font.pixelSize: 12 * root.s
+                stroke: 1.7
                 Behavior on color { ColorAnimation { duration: Motion.fast } }
             }
 

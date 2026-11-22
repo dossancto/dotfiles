@@ -96,7 +96,7 @@ PillSurface {
             Text {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                text: "報  NOTIFICATIONS"
+                text: "NOTIFICATIONS"
                 color: Theme.cream
                 font.family: Theme.font
                 font.pixelSize: 11 * root.s
@@ -311,12 +311,14 @@ PillSurface {
                 visible: root.entries.length === 0
                 spacing: 4 * root.s
 
-                Text {
+                GlyphIcon {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "静"
+                    width: 32 * root.s
+                    height: 32 * root.s
+                    name: "inbox"
                     color: Theme.ghost
-                    font.family: Theme.fontJp
-                    font.pixelSize: 32 * root.s
+                    opacity: 0.55
+                    stroke: 1.8
                 }
 
                 Text {
