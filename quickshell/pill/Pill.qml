@@ -128,7 +128,7 @@ Item {
         : (notificationsOpen ? "notifications"
         : (osdActive && !held ? "osd"
         : (toastActive && !held ? "toast"
-        : (expanded && !leftPill && !compactPill ? "hover" : "rest"))))))))))))
+        : (expanded && !leftPill && (!compactPill || held) ? "hover" : "rest"))))))))))))
 
     signal requestSurface(string name)
     signal requestClose()
