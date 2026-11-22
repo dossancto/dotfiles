@@ -339,7 +339,7 @@ ShellRoot {
                     screenName: overlay.modelData.name
                     barWindow: overlay
                     surface: overlay.leftSurface
-                    forcePinned: root.peekMon === overlay.modelData.name
+                    forcePinned: false
 
                     opacity: (overlay.monFullscreen && !overlay.compactMode) ? 0 : 1
                     Behavior on opacity {
@@ -376,7 +376,7 @@ ShellRoot {
                     screenName: overlay.modelData.name
                     barWindow: overlay
                     surface: overlay.rightSurface
-                    forcePinned: false
+                    forcePinned: root.peekMon === overlay.modelData.name
 
                     opacity: (overlay.monFullscreen && !overlay.compactMode) ? 0 : 1
                     Behavior on opacity {

@@ -13,7 +13,7 @@ local qsIsAlive = qsIpcCall .. " TEST_ALIVE"
 
 --##! Pill
 hl.bind("SUPER + N", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill link $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle network" })
-hl.bind("SUPER + O", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill bluetooth $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth" })
+hl.bind("SUPER + O", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill peek $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open controls hub" })
 hl.bind("SUPER + A", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill notifications $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle notifications" })
 hl.bind("SUPER + B", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill battery $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle battery status" })
 hl.bind("SUPER + M", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill mixer $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle mixer" })

@@ -470,45 +470,26 @@ Item {
         visible: opacity > 0.01
         Behavior on opacity { NumberAnimation { duration: pill.mode === "rest" ? Motion.fast : 260 } }
 
-        // Scratchpad compact pill: keyboard, mic, song, and notification state.
+        // Scratchpad compact pill: song art first, then keyboard, mic, and notification state.
         Row {
             id: compactRestRow
             anchors.centerIn: parent
             visible: pill.compactPill
             spacing: 7 * pill.s
 
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                text: HyprlandXkb.currentLayoutCode ?? "123"
-                color: Theme.cream
-                font.family: Theme.font
-                font.pixelSize: 11 * pill.s
-                font.weight: Font.DemiBold
-                font.features: { "tnum": 1 }
-            }
-
-            Item {
-                anchors.verticalCenter: parent.verticalCenter
-                width: 17 * pill.s
-                height: 17 * pill.s
-                GlyphIcon {
-                    anchors.fill: parent
-                    name: Audio.source?.audio?.muted ? "mic-off" : "mic"
-                    color: Theme.iconDim
-                    stroke: 1.7
-                }
-            }
-
             Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
-                width: 30 * pill.s
-                height: 30 * pill.s
+                width: 34 * pill.s
+                height: 34 * pill.s
                 radius: width / 2
                 color: Theme.tileBg
+                border.width: 1
+                border.color: Theme.border
                 clip: true
 
                 Image {
                     anchors.fill: parent
+                    anchors.margins: 1 * pill.s
                     source: pill.mediaArtUrl
                     sourceSize: Qt.size(96, 96)
                     fillMode: Image.PreserveAspectCrop
@@ -531,6 +512,28 @@ Item {
                     enabled: pill.hasMedia
                     cursorShape: Qt.PointingHandCursor
                     onClicked: pill.requestSurface("media")
+                }
+            }
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                text: HyprlandXkb.currentLayoutCode ?? "123"
+                color: Theme.cream
+                font.family: Theme.font
+                font.pixelSize: 11 * pill.s
+                font.weight: Font.DemiBold
+                font.features: { "tnum": 1 }
+            }
+
+            Item {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 17 * pill.s
+                height: 17 * pill.s
+                GlyphIcon {
+                    anchors.fill: parent
+                    name: Audio.source?.audio?.muted ? "mic-off" : "mic"
+                    color: Theme.iconDim
+                    stroke: 1.7
                 }
             }
 
