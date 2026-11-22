@@ -12,9 +12,11 @@ local qsIsAlive = qsIpcCall .. " TEST_ALIVE"
 -- hl.bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("pkill wlogout || wlogout -p layer-shell"))
 
 --##! Pill
-hl.bind("SUPER + N", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill link $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle Link surface" })
-hl.bind("SUPER + M", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill mixer $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle Link surface" })
-hl.bind("SUPER + O", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill peek $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth menu" })
+hl.bind("SUPER + N", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill link $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle network" })
+hl.bind("SUPER + O", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill bluetooth $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Open Bluetooth" })
+hl.bind("SUPER + A", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill notifications $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle notifications" })
+hl.bind("SUPER + B", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill battery $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle battery status" })
+hl.bind("SUPER + M", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill mixer $(hyprctl activeworkspace -j | jq -r '.monitor')"), { description = "Pill: Toggle mixer" })
 hl.bind("SUPER + C", hl.dsp.exec_cmd("qs -c pill ipc call"  .. " pill dismiss"), { description = "Pill: Open Bluetooth menu" })
 
 local launcher_cmd = "qs -c pill ipc call"  .. " pill launcher $(hyprctl activeworkspace -j | jq -r '.monitor')"

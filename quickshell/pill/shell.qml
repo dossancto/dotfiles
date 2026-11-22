@@ -14,10 +14,10 @@ import "Singletons"
  *  - `reserve` is a zero-content strip that only claims an exclusive zone the
  *    height of the rest pill, so tiled windows always sit below the pill even
  *    while it is expanded or a surface is open.
- *  - `overlay` is a full-screen transparent Overlay layer hosting the single
- *    morphing pill anchored at top-centre. The pill never moves windows and is
- *    never re-parented; it just grows in place, so every surface grows out of
- *    the rest pill instead of popping up as a separate panel.
+ *  - `overlay` is a full-screen transparent Overlay layer hosting two corner
+ *    morphing pills: the left pill owns now-playing and notifications, while
+ *    the right pill owns workspaces and system controls. Each surface grows in
+ *    place instead of popping up as a separate panel.
  *
  * Input is routed by the window mask. While the pill is collapsed the mask is
  * the pill rect only, so the rest of the screen clicks through to windows.
@@ -30,7 +30,14 @@ ShellRoot {
 
     property string openMon: ""
     property string openSurface: ""
+    property string openSide: ""
     property string peekMon: ""
+    property bool scratchpadOpen: false
+
+    onScratchpadOpenChanged: {
+        if (root.openSurface === "media" || root.openSurface === "notifications")
+            root.openSide = root.scratchpadOpen ? "right" : "left";
+    }
 
     function refresh() {
         Hyprland.refreshMonitors();
@@ -85,23 +92,40 @@ ShellRoot {
     Connections {
         target: Hyprland
         function onRawEvent(event) {
+            if (event.name === "activespecial") {
+                const parts = String(event.data || "").split(",");
+                const wsName = (parts[0] || "").trim();
+                if (wsName === "") {
+                    root.scratchpadOpen = false;
+                } else {
+                    root.scratchpadOpen = wsName.startsWith("special:") || wsName.startsWith("special");
+                }
+            }
             if (root.refreshEvents[event.name])
                 root.refresh();
         }
     }
 
     function toggleSurface(mon, surface) {
-        if (root.openMon === mon && root.openSurface === surface) {
+        const side = (root.scratchpadOpen
+            ? "right"
+            : ((surface === "media" || surface === "notifications") ? "left" : "right"));
+        if (root.openMon === mon && root.openSurface === surface && root.openSide === side) {
             root.close();
             return;
         }
         root.openMon = mon;
         root.openSurface = surface;
+        root.openSide = side;
     }
 
     function close() {
         root.openMon = "";
         root.openSurface = "";
+        root.openSide = "";
+        Qt.callLater(function() {
+            Quickshell.execDetached(["hyprctl", "dispatch", "focuscurrentorlast"]);
+        });
     }
 
     function peek(mon) {
@@ -124,6 +148,8 @@ ShellRoot {
         function launcher(mon: string): void { root.toggleSurface(mon, "launcher"); }
         function power(mon: string): void { root.toggleSurface(mon, "power"); }
         function link(mon: string): void { root.toggleSurface(mon, "link"); }
+        function bluetooth(mon: string): void { root.toggleSurface(mon, "bluetooth"); }
+        function notifications(mon: string): void { root.toggleSurface(mon, "notifications"); }
         function battery(mon: string): void { root.toggleSurface(mon, "battery"); }
         function clipboard(mon: string): void { root.toggleSurface(mon, "clipboard"); }
         function wallpaper(mon: string): void { root.toggleSurface(mon, "wallpaper"); }
@@ -168,9 +194,12 @@ ShellRoot {
             required property var modelData
             readonly property real s: modelData ? modelData.height / 1080 : 1
             readonly property real topGap: 2 * s
-            readonly property string surface: root.openMon === modelData.name ? root.openSurface : ""
-            readonly property bool surfaceOpen: surface.length > 0
-            readonly property bool modal: surfaceOpen || pill.held
+            readonly property bool compactMode: root.scratchpadOpen
+            readonly property string leftSurface: (root.openMon === modelData.name && root.openSide === "left") ? root.openSurface : ""
+            readonly property string rightSurface: (root.openMon === modelData.name && root.openSide === "right") ? root.openSurface : ""
+            readonly property bool surfaceOpen: leftSurface.length > 0 || rightSurface.length > 0
+            readonly property bool modal: surfaceOpen || leftPill.held || rightPill.held
+
 
             /**
              * True while this monitor's active workspace holds a real
@@ -191,10 +220,11 @@ ShellRoot {
                 return false;
             }
 
-            onMonFullscreenChanged: if (monFullscreen) {
+            onMonFullscreenChanged: if (monFullscreen && !compactMode) {
                 if (root.openMon === modelData.name) root.close();
                 if (root.peekMon === modelData.name) root.peekMon = "";
-                pill.pinned = false;
+                leftPill.pinned = false;
+                rightPill.pinned = false;
             }
 
             screen: modelData
@@ -206,15 +236,19 @@ ShellRoot {
 
             anchors { top: true; left: true; right: true; bottom: true }
 
-            mask: monFullscreen ? hiddenRegion : (modal ? fullRegion : pillRegion)
+            mask: (monFullscreen && !compactMode) ? hiddenRegion : (modal ? fullRegion : pillRegion)
             Region { id: hiddenRegion }
             Region {
                 id: pillRegion
-                readonly property real baseW: Math.max(pill.width, pill.targetW)
-                x: pill.x
-                y: pill.y
-                width: baseW + pill.inputPadRight
-                height: Math.max(pill.height, pill.targetH)
+                readonly property real leftBaseW: Math.max(leftPill.width, leftPill.targetW)
+                readonly property real rightBaseW: Math.max(rightPill.width, rightPill.targetW)
+                readonly property real unionX: Math.min(leftPill.x, rightPill.x)
+                readonly property real unionRight: Math.max(leftPill.x + leftBaseW + leftPill.inputPadRight,
+                                                       rightPill.x + rightBaseW + rightPill.inputPadRight)
+                x: unionX
+                y: Math.min(leftPill.y, rightPill.y)
+                width: unionRight - unionX
+                height: Math.max(leftPill.height, leftPill.targetH, rightPill.height, rightPill.targetH)
             }
             Region {
                 id: fullRegion
@@ -229,7 +263,8 @@ ShellRoot {
                 onPressed: {
                     if (overlay.surfaceOpen) root.close();
                     else {
-                        pill.pinned = false;
+                        leftPill.pinned = false;
+                        rightPill.pinned = false;
                         root.peekMon = "";
                     }
                 }
@@ -240,37 +275,73 @@ ShellRoot {
                 anchors.fill: parent
                 focus: overlay.surfaceOpen
 
-                HoverHandler {
-                    onHoveredChanged: pill.hovered = hovered
+                Keys.onEscapePressed: {
+                    if (overlay.leftSurface.length > 0) {
+                        if (!leftPill.linkBack()) root.close();
+                    } else {
+                        if (!rightPill.linkBack()) root.close();
+                    }
                 }
-                Keys.onEscapePressed: if (!pill.linkBack()) root.close()
-                Keys.onUpPressed: (e) => { e.accepted = pill.mixerStep(1); }
-                Keys.onDownPressed: (e) => { e.accepted = pill.mixerStep(-1); }
+                Keys.onUpPressed: (e) => {
+                    if (overlay.leftSurface === "notifications") { leftPill.notificationMove(-1); e.accepted = true; }
+                    else if (overlay.rightSurface === "notifications") { rightPill.notificationMove(-1); e.accepted = true; }
+                    else { e.accepted = rightPill.mixerStep(1); }
+                }
+                Keys.onDownPressed: (e) => {
+                    if (overlay.leftSurface === "notifications") { leftPill.notificationMove(1); e.accepted = true; }
+                    else if (overlay.rightSurface === "notifications") { rightPill.notificationMove(1); e.accepted = true; }
+                    else { e.accepted = rightPill.mixerStep(-1); }
+                }
                 Keys.onLeftPressed: (e) => {
-                    if (pill.mixerOpen) { pill.mixerFocusMove(-1); e.accepted = true; }
-                    else if (pill.wallpaperOpen) { pill.wallpaperMove(-1); e.accepted = true; }
+                    if (rightPill.mixerOpen) { rightPill.mixerFocusMove(-1); e.accepted = true; }
+                    else if (rightPill.wallpaperOpen) { rightPill.wallpaperMove(-1); e.accepted = true; }
                 }
                 Keys.onRightPressed: (e) => {
-                    if (pill.mixerOpen) { pill.mixerFocusMove(1); e.accepted = true; }
-                    else if (pill.wallpaperOpen) { pill.wallpaperMove(1); e.accepted = true; }
+                    if (rightPill.mixerOpen) { rightPill.mixerFocusMove(1); e.accepted = true; }
+                    else if (rightPill.wallpaperOpen) { rightPill.wallpaperMove(1); e.accepted = true; }
                 }
-                Keys.onReturnPressed: (e) => { if (pill.wallpaperOpen) { pill.wallpaperActivate(); e.accepted = true; } }
-                Keys.onEnterPressed: (e) => { if (pill.wallpaperOpen) { pill.wallpaperActivate(); e.accepted = true; } }
-                Keys.onSpacePressed: (e) => { if (pill.wallpaperOpen) { pill.wallpaperActivate(); e.accepted = true; } }
+                Keys.onReturnPressed: (e) => {
+                    if (overlay.leftSurface === "notifications") { leftPill.notificationActivate(); e.accepted = true; }
+                    else if (overlay.rightSurface === "notifications") { rightPill.notificationActivate(); e.accepted = true; }
+                    else if (rightPill.wallpaperOpen) { rightPill.wallpaperActivate(); e.accepted = true; }
+                }
+                Keys.onEnterPressed: (e) => {
+                    if (overlay.leftSurface === "notifications") { leftPill.notificationActivate(); e.accepted = true; }
+                    else if (overlay.rightSurface === "notifications") { rightPill.notificationActivate(); e.accepted = true; }
+                    else if (rightPill.wallpaperOpen) { rightPill.wallpaperActivate(); e.accepted = true; }
+                }
+                Keys.onDeletePressed: (e) => {
+                    if (overlay.leftSurface === "notifications") { leftPill.notificationDismiss(); e.accepted = true; }
+                    else if (overlay.rightSurface === "notifications") { rightPill.notificationDismiss(); e.accepted = true; }
+                }
+                Keys.onBackPressed: (e) => {
+                    if (overlay.leftSurface === "notifications") { leftPill.notificationDismiss(); e.accepted = true; }
+                    else if (overlay.rightSurface === "notifications") { rightPill.notificationDismiss(); e.accepted = true; }
+                }
+                Keys.onSpacePressed: (e) => { if (rightPill.wallpaperOpen) { rightPill.wallpaperActivate(); e.accepted = true; } }
+                Keys.onPressed: (event) => {
+                    if (overlay.leftSurface === "notifications" && event.text.toLowerCase() === "n") {
+                        leftPill.notificationToggleDnd(); event.accepted = true;
+                    } else if (overlay.rightSurface === "notifications" && event.text.toLowerCase() === "n") {
+                        rightPill.notificationToggleDnd(); event.accepted = true;
+                    }
+                }
 
                 Pill {
-                    id: pill
+                    id: leftPill
+                    role: "left"
+                    visible: !overlay.compactMode
                     anchors.top: parent.top
                     anchors.topMargin: overlay.topGap
-                    anchors.right: parent.right
-                    anchors.rightMargin: 12 * overlay.s
+                    anchors.left: parent.left
+                    anchors.leftMargin: 12 * overlay.s
                     s: overlay.s
                     screenName: overlay.modelData.name
                     barWindow: overlay
-                    surface: overlay.surface
+                    surface: overlay.leftSurface
                     forcePinned: root.peekMon === overlay.modelData.name
 
-                    opacity: overlay.monFullscreen ? 0 : 1
+                    opacity: (overlay.monFullscreen && !overlay.compactMode) ? 0 : 1
                     Behavior on opacity {
                         NumberAnimation {
                             duration: Motion.morph
@@ -279,7 +350,7 @@ ShellRoot {
                         }
                     }
                     transform: Translate {
-                        y: overlay.monFullscreen ? -(pill.height + overlay.topGap) : 0
+                        y: (overlay.monFullscreen && !overlay.compactMode) ? -(leftPill.height + overlay.topGap) : 0
                         Behavior on y {
                             NumberAnimation {
                                 duration: Motion.morph
@@ -289,6 +360,44 @@ ShellRoot {
                         }
                     }
 
+                    HoverHandler { onHoveredChanged: leftPill.hovered = hovered }
+                    onRequestSurface: (name) => root.toggleSurface(overlay.modelData.name, name)
+                    onRequestClose: root.close()
+                }
+
+                Pill {
+                    id: rightPill
+                    role: overlay.compactMode ? "compact" : "right"
+                    anchors.top: parent.top
+                    anchors.topMargin: overlay.topGap
+                    anchors.right: parent.right
+                    anchors.rightMargin: 12 * overlay.s
+                    s: overlay.s
+                    screenName: overlay.modelData.name
+                    barWindow: overlay
+                    surface: overlay.rightSurface
+                    forcePinned: false
+
+                    opacity: (overlay.monFullscreen && !overlay.compactMode) ? 0 : 1
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: Motion.morph
+                            easing.type: Motion.easeMorph
+                            easing.bezierCurve: Motion.morphCurve
+                        }
+                    }
+                    transform: Translate {
+                        y: (overlay.monFullscreen && !overlay.compactMode) ? -(rightPill.height + overlay.topGap) : 0
+                        Behavior on y {
+                            NumberAnimation {
+                                duration: Motion.morph
+                                easing.type: Motion.easeMorph
+                                easing.bezierCurve: Motion.morphCurve
+                            }
+                        }
+                    }
+
+                    HoverHandler { onHoveredChanged: rightPill.hovered = hovered }
                     onRequestSurface: (name) => root.toggleSurface(overlay.modelData.name, name)
                     onRequestClose: root.close()
                 }

@@ -27,6 +27,7 @@ PillSurface {
     mBottom: 13
 
     property string subview: "main"
+    property string initialSubview: "main"
     property int keyboardFocusIndex: -1
 
     readonly property real desiredW: (subview === "wifi" ? 272 : subview === "bt" ? 286 : 330) * s
@@ -135,7 +136,8 @@ PillSurface {
 
     onActiveChanged: {
         if (active) {
-            subview = "main";
+            subview = initialSubview;
+            keyboardFocusIndex = subview === "bt" ? 1 : 0;
             seenTimer.restart();
         } else {
             seenTimer.stop();
@@ -384,17 +386,6 @@ PillSurface {
         }
 
         Keys.onPressed: (event) => {
-	    if(event.text === "c")
-	    {
-	        Notifs.clearAll();
-	        return
-	    }
-
-	    if(event.text === "n")
-	    {
-		Flags.dnd = !Flags.dnd
-	        return
-	    }
 
             if (!mainView.enabled) return;
             
@@ -523,10 +514,21 @@ PillSurface {
                     onClicked: root.subview = "wifi"
                 }
 
+                Rectangle {
+                    visible: root.keyboardFocusIndex === 0
+                    anchors.left: parent.left
+                    anchors.leftMargin: 4 * root.s
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 5 * root.s
+                    height: 5 * root.s
+                    radius: width / 2
+                    color: Theme.vermLit
+                }
+
                 GlyphIcon {
                     id: netzGlyph
                     anchors.left: parent.left
-                    anchors.leftMargin: 8 * root.s
+                    anchors.leftMargin: 17 * root.s
                     anchors.verticalCenter: parent.verticalCenter
                     width: 17 * root.s
                     height: 17 * root.s
@@ -618,10 +620,21 @@ PillSurface {
                     onClicked: root.subview = "bt"
                 }
 
+                Rectangle {
+                    visible: root.keyboardFocusIndex === 1
+                    anchors.left: parent.left
+                    anchors.leftMargin: 4 * root.s
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 5 * root.s
+                    height: 5 * root.s
+                    radius: width / 2
+                    color: Theme.vermLit
+                }
+
                 GlyphIcon {
                     id: btGlyph
                     anchors.left: parent.left
-                    anchors.leftMargin: 8 * root.s
+                    anchors.leftMargin: 17 * root.s
                     anchors.verticalCenter: parent.verticalCenter
                     width: 17 * root.s
                     height: 17 * root.s
@@ -692,6 +705,7 @@ PillSurface {
             }
 
             Item {
+                visible: false
                 width: parent.width
                 height: 20 * root.s
 
@@ -772,7 +786,7 @@ PillSurface {
             }
 
             Item {
-                visible: Notifs.count > 0
+                visible: false
                 width: parent.width
                 height: notifFlick.height
 
@@ -967,7 +981,7 @@ PillSurface {
             }
 
             Column {
-                visible: Notifs.count === 0
+                visible: false
                 width: parent.width
                 topPadding: 14 * root.s
                 bottomPadding: 14 * root.s

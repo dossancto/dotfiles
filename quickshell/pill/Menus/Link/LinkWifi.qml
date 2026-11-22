@@ -148,6 +148,7 @@ Item {
 
     onActiveChanged: {
         if (active) {
+            keyboardFocusIndex = 0;
             refresh();
             refreshHotspot();
             root.forceActiveFocus();
@@ -568,9 +569,20 @@ Item {
                                 onClicked: root.activateNetwork(netItem.modelData)
                             }
 
+                            Rectangle {
+                                visible: netItem.keyboardFocused
+                                anchors.left: parent.left
+                                anchors.leftMargin: 4 * root.s
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 5 * root.s
+                                height: 5 * root.s
+                                radius: width / 2
+                                color: Theme.vermLit
+                            }
+
                             Text {
                                 anchors.left: parent.left
-                                anchors.leftMargin: 10 * root.s
+                                anchors.leftMargin: 22 * root.s
                                 anchors.right: rowRight.left
                                 anchors.rightMargin: 8 * root.s
                                 anchors.verticalCenter: parent.verticalCenter

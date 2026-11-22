@@ -9,6 +9,7 @@ import Quickshell.Networking
 import "Singletons"
 import "services"
 import "Menus/Link"
+import "Menus/Notifications"
 import "Components/shared/Icons"
 
 /**
@@ -29,6 +30,13 @@ Item {
     property var barWindow
     property string surface: ""
 
+    // left: now-playing and notifications in normal mode.
+    // right: workspaces and system controls in normal mode.
+    // compact: scratchpad open, a single right-side status pill.
+    property string role: "right"
+    readonly property bool leftPill: role === "left"
+    readonly property bool compactPill: role === "compact"
+
     property bool hovered: false
     property bool pinned: false
     property bool forcePinned: false
@@ -41,9 +49,34 @@ Item {
     readonly property bool wallpaperOpen: surface === "wallpaper"
     readonly property bool powerOpen: surface === "power"
     readonly property bool mediaOpen: surface === "media"
-    readonly property bool linkOpen: surface === "link"
+    readonly property bool linkOpen: surface === "link" || surface === "bluetooth"
+    readonly property bool bluetoothOpen: surface === "bluetooth"
+    readonly property bool notificationsOpen: surface === "notifications"
     readonly property bool batteryOpen: surface === "battery"
     readonly property bool hasMedia: Mpris.players.values.length > 0
+
+    readonly property var activePlayer: {
+        var list = Mpris.players.values;
+        if (!list || list.length === 0)
+            return null;
+        for (var i = 0; i < list.length; i++) {
+            var p = list[i];
+            if (p && p.isPlaying)
+                return p;
+        }
+        for (var j = 0; j < list.length; j++) {
+            var q = list[j];
+            if (q && q.trackTitle && q.trackTitle.length > 0)
+                return q;
+        }
+        return list[0];
+    }
+    readonly property string mediaTitle: activePlayer && activePlayer.trackTitle
+        ? activePlayer.trackTitle : (leftPill ? "Nothing playing" : "")
+    readonly property string mediaArtist: activePlayer
+        ? Theme.joinArtists(activePlayer.trackArtists, activePlayer.trackArtist) : ""
+    readonly property string mediaArtUrl: activePlayer && activePlayer.trackArtUrl
+        ? activePlayer.trackArtUrl : ""
 
     readonly property var netDevices: (typeof Networking !== "undefined" && Networking && Networking.devices) ? Networking.devices.values : []
     readonly property var wifiDev: netDevices.find(function(d) { return d && d.type === DeviceType.Wifi }) || null
@@ -53,11 +86,11 @@ Item {
     readonly property real wifiLevel: (wifiActive && wifiActive.signalStrength) || 0
     readonly property bool surfaceOpen: surface.length > 0
     property bool hoverLatch: false
-    readonly property bool expanded: surfaceOpen || held || hoverLatch
-    readonly property bool toastActive: Notifs.popups.length > 0
-    readonly property bool osdActive: osd.flashing
+    readonly property bool expanded: surfaceOpen || held || (!leftPill && !compactPill && hoverLatch)
+    readonly property bool toastActive: (leftPill || compactPill) && Notifs.popups.length > 0
+    readonly property bool osdActive: !leftPill && osd.flashing
 
-    readonly property real restW: 160 * s
+    readonly property real restW: ((leftPill || compactPill) ? 224 : 160) * s
     readonly property real restH: 38 * s
     readonly property real hoverPad: 20 * s
     readonly property real hoverW: hoverRow.implicitWidth + 2 * hoverPad
@@ -77,6 +110,8 @@ Item {
     readonly property real mediaW: 390 * s
     readonly property real mediaH: 150 * s
     readonly property real batteryW: 316 * s
+    readonly property real notificationsW: 360 * s
+    readonly property real notificationsH: 380 * s
     readonly property real toastW: 342 * s
     readonly property real restCorner: 18 * s
     readonly property real openCorner: 22 * s
@@ -90,9 +125,10 @@ Item {
         : (mixerOpen ? "mixer"
         : (linkOpen ? "link"
         : (batteryOpen ? "battery"
+        : (notificationsOpen ? "notifications"
         : (osdActive && !held ? "osd"
         : (toastActive && !held ? "toast"
-        : (expanded ? "hover" : "rest")))))))))))
+        : (expanded && !leftPill && !compactPill ? "hover" : "rest"))))))))))))
 
     signal requestSurface(string name)
     signal requestClose()
@@ -142,6 +178,26 @@ Item {
             wall.activate();
     }
 
+    function notificationMove(delta) {
+        if (pill.notificationsOpen)
+            notifications.moveSelection(delta);
+    }
+
+    function notificationActivate() {
+        if (pill.notificationsOpen)
+            notifications.activateSelected();
+    }
+
+    function notificationDismiss() {
+        if (pill.notificationsOpen)
+            notifications.dismissSelected();
+    }
+
+    function notificationToggleDnd() {
+        if (pill.notificationsOpen)
+            notifications.toggleDnd();
+    }
+
     onSurfaceOpenChanged: if (surfaceOpen) pinned = false
 
     QtObject {
@@ -174,6 +230,7 @@ Item {
         mixer:     () => Qt.size(mixerW, mixerH),
         link:      () => Qt.size(link.desiredW, link.implicitHeight + 26 * s),
         battery:   () => Qt.size(batteryW, battery.implicitHeight + 26 * s),
+        notifications: () => Qt.size(notificationsW, notificationsH),
         osd:       () => Qt.size(osd.desiredW, osd.desiredH),
         toast:     () => Qt.size(toastW, toastLoader.item ? toastLoader.item.implicitHeight + 24 * s : restH),
         hover:     () => Qt.size(hoverW, hoverH)
@@ -233,7 +290,7 @@ Item {
 
     Rectangle {
         id: bud
-        readonly property bool shown: pill.mode === "hover" && pill.hasMedia
+        readonly property bool shown: pill.mode === "hover" && pill.hasMedia && pill.leftPill
         property real budR: (budArea.containsMouse ? 15 : 12) * pill.s
         width: budR * 2
         height: budR * 2
@@ -356,13 +413,14 @@ Item {
      * Null = nothing open, so Ame falls back to the pill's own hover/wake anchor.
      */
     readonly property var ameSurface: mediaOpen ? media
+        : (notificationsOpen ? notifications
         : (launcherOpen ? launcher
         : (clipboardOpen ? clip
         : (calendarOpen ? calendar
         : (mixerOpen ? mixer
         : (powerOpen ? power
         : (linkOpen ? link
-        : (batteryOpen ? battery : null)))))))
+        : (batteryOpen ? battery : null))))))))
 
     /**
      * Extra input width past the pill's right edge while the media bud sticks
@@ -398,27 +456,250 @@ Item {
     TapHandler {
         enabled: !pill.surfaceOpen
         gesturePolicy: TapHandler.WithinBounds
-        onTapped: pill.pinned = !pill.pinned
+        onTapped: if (pill.leftPill || pill.compactPill) {
+            if (pill.hasMedia) pill.requestSurface("media")
+        } else {
+            pill.pinned = !pill.pinned
+        }
     }
 
     Item {
         id: rest
         anchors.fill: parent
-        opacity: (pill.expanded || pill.mode === "toast" || pill.mode === "osd") ? 0 : Math.pow(pill.morphCloseness, 1.5)
+        opacity: (pill.surfaceOpen || (!pill.leftPill && pill.expanded) || pill.mode === "toast" || pill.mode === "osd") ? 0 : Math.pow(pill.morphCloseness, 1.5)
         visible: opacity > 0.01
         Behavior on opacity { NumberAnimation { duration: pill.mode === "rest" ? Motion.fast : 260 } }
 
+        // Scratchpad compact pill: keyboard, mic, song, and notification state.
+        Row {
+            id: compactRestRow
+            anchors.centerIn: parent
+            visible: pill.compactPill
+            spacing: 7 * pill.s
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                text: HyprlandXkb.currentLayoutCode ?? "123"
+                color: Theme.cream
+                font.family: Theme.font
+                font.pixelSize: 11 * pill.s
+                font.weight: Font.DemiBold
+                font.features: { "tnum": 1 }
+            }
+
+            Item {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 17 * pill.s
+                height: 17 * pill.s
+                GlyphIcon {
+                    anchors.fill: parent
+                    name: Audio.source?.audio?.muted ? "mic-off" : "mic"
+                    color: Theme.iconDim
+                    stroke: 1.7
+                }
+            }
+
+            Rectangle {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 30 * pill.s
+                height: 30 * pill.s
+                radius: width / 2
+                color: Theme.tileBg
+                clip: true
+
+                Image {
+                    anchors.fill: parent
+                    source: pill.mediaArtUrl
+                    sourceSize: Qt.size(96, 96)
+                    fillMode: Image.PreserveAspectCrop
+                    asynchronous: true
+                    visible: status === Image.Ready
+                }
+
+                GlyphIcon {
+                    anchors.centerIn: parent
+                    width: 15 * pill.s
+                    height: 15 * pill.s
+                    name: pill.activePlayer && pill.activePlayer.isPlaying ? "pause" : "play"
+                    color: Theme.iconDim
+                    stroke: 1.7
+                    visible: pill.mediaArtUrl === ""
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    enabled: pill.hasMedia
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: pill.requestSurface("media")
+                }
+            }
+
+            Item {
+                anchors.verticalCenter: parent.verticalCenter
+                visible: Flags.dnd || Notifs.unread > 0
+                width: visible ? 17 * pill.s : 0
+                height: 17 * pill.s
+
+                GlyphIcon {
+                    anchors.fill: parent
+                    name: Flags.dnd ? "inbox-off" : "inbox"
+                    color: Flags.dnd ? Theme.vermLit : Theme.iconDim
+                    stroke: 1.7
+                }
+
+                Rectangle {
+                    visible: Notifs.unread > 0
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.topMargin: -2 * pill.s
+                    anchors.rightMargin: -2 * pill.s
+                    width: 5 * pill.s
+                    height: 5 * pill.s
+                    radius: width / 2
+                    color: Theme.flameGlow
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -5 * pill.s
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: pill.requestSurface("notifications")
+                }
+            }
+        }
+
+        // Left pill: current track plus notification controls.
+        Row {
+            id: leftRestRow
+            anchors.centerIn: parent
+            visible: pill.leftPill
+            spacing: 7 * pill.s
+
+            Rectangle {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 30 * pill.s
+                height: 30 * pill.s
+                radius: width / 2
+                color: Theme.tileBg
+                clip: true
+
+                Image {
+                    anchors.fill: parent
+                    source: pill.mediaArtUrl
+                    sourceSize: Qt.size(96, 96)
+                    fillMode: Image.PreserveAspectCrop
+                    asynchronous: true
+                    visible: status === Image.Ready
+                }
+
+                GlyphIcon {
+                    anchors.centerIn: parent
+                    width: 15 * pill.s
+                    height: 15 * pill.s
+                    name: pill.activePlayer && pill.activePlayer.isPlaying ? "pause" : "play"
+                    color: Theme.iconDim
+                    stroke: 1.7
+                    visible: pill.mediaArtUrl === ""
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    enabled: pill.hasMedia
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: pill.requestSurface("media")
+                }
+            }
+
+            Item {
+                anchors.verticalCenter: parent.verticalCenter
+                width: 142 * pill.s
+                height: 30 * pill.s
+
+                Column {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width
+                    spacing: 1 * pill.s
+
+                    Text {
+                        width: parent.width
+                        text: pill.mediaTitle
+                        color: Theme.cream
+                        font.family: Theme.font
+                        font.pixelSize: 10.5 * pill.s
+                        font.weight: Font.DemiBold
+                        elide: Text.ElideRight
+                    }
+
+                    Text {
+                        width: parent.width
+                        text: pill.mediaArtist
+                        color: Theme.dim
+                        font.family: Theme.font
+                        font.pixelSize: 8.5 * pill.s
+                        font.weight: Font.Medium
+                        elide: Text.ElideRight
+                        visible: text.length > 0
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    enabled: pill.hasMedia
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: pill.requestSurface("media")
+                }
+            }
+
+            Item {
+                id: leftInboxClosed
+                anchors.verticalCenter: parent.verticalCenter
+                width: 17 * pill.s
+                height: 17 * pill.s
+
+                GlyphIcon {
+                    anchors.fill: parent
+                    name: Flags.dnd ? "inbox-off" : "inbox"
+                    color: (leftInboxClosedArea.containsMouse || Flags.dnd) ? Theme.vermLit : Theme.iconDim
+                    stroke: 1.7
+                }
+
+                Rectangle {
+                    visible: Notifs.unread > 0
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.topMargin: -2 * pill.s
+                    anchors.rightMargin: -2 * pill.s
+                    width: 5 * pill.s
+                    height: 5 * pill.s
+                    radius: width / 2
+                    color: Theme.flameGlow
+                }
+
+                MouseArea {
+                    id: leftInboxClosedArea
+                    anchors.fill: parent
+                    anchors.margins: -5 * pill.s
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: pill.requestSurface("notifications")
+                }
+            }
+        }
+
+        // Right pill: original system/status content. It has no notification
+        // popup or inbox behavior.
         Row {
             id: restRow
             anchors.centerIn: parent
+            visible: !pill.leftPill && !pill.compactPill
             spacing: 9 * pill.s
 
-	    Item {
-	        id: battery_level_closed
-	        visible: Battery.pct < 35
-	        anchors.verticalCenter: parent.verticalCenter
-	        width: 17 * pill.s
-	        height: 17 * pill.s
+            Item {
+                id: battery_level_closed
+                visible: Battery.pct < 35
+                anchors.verticalCenter: parent.verticalCenter
+                width: 17 * pill.s
+                height: 17 * pill.s
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
@@ -429,7 +710,7 @@ Item {
                     font.weight: Font.DemiBold
                     font.features: { "tnum": 1 }
                 }
-	    }
+            }
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
@@ -441,34 +722,19 @@ Item {
                 font.features: { "tnum": 1 }
             }
 
-	    Item {
-	        id: mic_a
-	        anchors.verticalCenter: parent.verticalCenter
-	        width: 17 * pill.s
-	        height: 17 * pill.s
+            Item {
+                id: mic_a
+                anchors.verticalCenter: parent.verticalCenter
+                width: 17 * pill.s
+                height: 17 * pill.s
 
-	        GlyphIcon {
-		    anchors.fill: parent
-		    name:  Audio.source?.audio?.muted ? "mic-off" : "mic"
-		    color: Theme.iconDim
-		    stroke: 1.7
-	        }
-	    }
-
-	    Item {
-	        id: dndIcon_closed
-	        visible: Flags.dnd
-	        anchors.verticalCenter: parent.verticalCenter
-	        width: 17 * pill.s
-	        height: 17 * pill.s
-
-	        GlyphIcon {
-		    anchors.fill: parent
-		    name:  "inbox-off"
-		    color: Theme.vermLit
-		    stroke: 1.7
-	        }
-	    }
+                GlyphIcon {
+                    anchors.fill: parent
+                    name: Audio.source?.audio?.muted ? "mic-off" : "mic"
+                    color: Theme.iconDim
+                    stroke: 1.7
+                }
+            }
         }
     }
 
@@ -587,7 +853,7 @@ Item {
 
 	        Item {
 	            id: dndIcon_open
-	            visible: Flags.dnd
+	            visible: false
 	            anchors.verticalCenter: parent.verticalCenter
 	            width: 17 * pill.s
 	            height: 17 * pill.s
@@ -663,6 +929,7 @@ Item {
 
                 Item {
                     id: inboxIcon
+                    visible: false
                     anchors.verticalCenter: parent.verticalCenter
                     width: 17 * pill.s
                     height: 17 * pill.s
@@ -807,8 +1074,17 @@ Item {
 
     Link {
         id: link
+        initialSubview: pill.bluetoothOpen ? "bt" : "main"
         s: pill.s
         open: pill.linkOpen
+        morphCloseness: pill.morphCloseness
+        onRequestClose: pill.requestClose()
+    }
+
+    Notifications {
+        id: notifications
+        s: pill.s
+        open: pill.notificationsOpen
         morphCloseness: pill.morphCloseness
         onRequestClose: pill.requestClose()
     }

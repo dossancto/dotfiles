@@ -103,6 +103,7 @@ Item {
 
     onActiveChanged: {
         if (active) {
+            keyboardFocusIndex = 0;
             root.forceActiveFocus();
         } else {
             scanTimer.stop();
@@ -340,9 +341,20 @@ Item {
                             }
 
                             Rectangle {
+                                visible: devItem.keyboardFocused
+                                anchors.left: parent.left
+                                anchors.leftMargin: 4 * root.s
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 5 * root.s
+                                height: 5 * root.s
+                                radius: width / 2
+                                color: Theme.vermLit
+                            }
+
+                            Rectangle {
                                 id: devTile
                                 anchors.left: parent.left
-                                anchors.leftMargin: 6 * root.s
+                                anchors.leftMargin: 16 * root.s
                                 anchors.verticalCenter: parent.verticalCenter
                                 width: 26 * root.s
                                 height: 26 * root.s
